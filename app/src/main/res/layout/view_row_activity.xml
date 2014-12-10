@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/activity_row"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="80dp"
+    android:background="@color/grey"
+    android:weightSum="5"
+    >
+
+    <ImageView
+        android:id="@+id/activity_icon"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="fill_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginRight="6dip"
+        android:contentDescription="TODO"
+        android:src="@drawable/ic_launcher" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_weight="4"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/activity_title"
+            android:layout_width="fill_parent"
+            android:layout_height="26dip"
+            android:layout_marginTop="5dp"
+            android:ellipsize="marquee"
+            android:singleLine="true"
+            android:text="Description"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/activity_body"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_above="@id/activity_title"
+            android:layout_marginTop="1dp"
+            android:layout_marginBottom="1dp"
+
+
+            android:layout_alignWithParentIfMissing="true"
+            android:gravity="top|left"
+            android:text="Example application"
+            android:textSize="12sp"
+            android:singleLine="false"
+            />
+    </LinearLayout>
+
+</LinearLayout>
