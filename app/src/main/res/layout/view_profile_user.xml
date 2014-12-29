@@ -7,7 +7,17 @@
     <ListView
         android:id="@+id/user_profile_list_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         </ListView>
+    
+    <Button
+        android:id="@+id/user_set_main_user_button"
+        android:layout_width="300dp"
+        android:layout_height="60dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:text="Set as main user"
+        android:visibility="invisible"
+        />
 </LinearLayout>

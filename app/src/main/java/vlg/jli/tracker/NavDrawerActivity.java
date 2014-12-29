@@ -1,25 +1,28 @@
 package vlg.jli.tracker;
 
 import android.app.ActionBar;
-import android.app.Activity;
-import android.app.FragmentManager;
+
+import android.content.Intent;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import vlg.jli.tracker.Profile.ProfileFragment;
+import vlg.jli.tracker.Server.ServerPagerFragment;
 
 /**
  * Created by johnli on 12/1/14.
  */
-public class NavDrawerActivity extends Activity
+public class NavDrawerActivity extends FragmentActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
      */
-    private static NavigationDrawerFragment mNavigationDrawerFragment;
+    protected static NavigationDrawerFragment mNavigationDrawerFragment;
 
     /**
      * Used to store the last screen title. For use in {@link #restoreActionBar()}.
@@ -48,32 +51,37 @@ public class NavDrawerActivity extends Activity
         {
             ProfileFragment fragment = new ProfileFragment();
 
-            FragmentManager fragmentManager = getFragmentManager();
+            FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction()
                     .replace(R.id.container, fragment)
                     .commit();
         }
         else if(position == 1)
         {
-            ServerListFragment fragment = new ServerListFragment();
+            ServerPagerFragment fragment = new ServerPagerFragment();
 
-            FragmentManager fragmentManager = getFragmentManager();
+            FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction()
                     .replace(R.id.container, fragment)
                     .commit();
         }
         else if(position == 2) {
-            UserListFragment fragment= new UserListFragment();
+            /*UserListFragment fragment= new UserListFragment();
 
-            FragmentManager fragmentManager = getFragmentManager();
+            FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction()
                     .replace(R.id.container, fragment)
                     .commit();
+                    */
+            Intent intent = new Intent(this, UserSearchActivity.class);
+            startActivity(intent);
+
+            overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
         }
         else if(position == 3)
         {
             AboutFragment fragment = new AboutFragment();
-            FragmentManager fragmentManager = getFragmentManager();
+            FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction()
                     .replace(R.id.container, fragment)
                     .commit();

@@ -1,8 +1,8 @@
 package vlg.jli.tracker.Profile;
 
-import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,7 +21,7 @@ import vlg.jli.tracker.R;
 /**
  * Created by johnli on 12/1/14.
  */
-public class AwardsTabFragment extends Fragment{
+public class AwardsTabFragment extends Fragment {
     ListView activityListView;
 //profile_activity_list_view
 

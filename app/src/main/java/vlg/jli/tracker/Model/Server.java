@@ -1,9 +1,12 @@
 package vlg.jli.tracker.Model;
 
+import java.util.List;
+import java.util.Observable;
+
 /**
  * Created by johnli on 11/28/14.
  */
-public class Server {
+public class Server extends Observable{
 
     public String id;
     public String addr;
@@ -15,6 +18,7 @@ public class Server {
     public int playerCount; //act
     public int maxPlayers; //max
 
+    public List<ServerPlayer> playerList;
     //Global stats
     int killCount;
     int headshotCount;
@@ -53,5 +57,10 @@ public class Server {
         map = MapName;
         playerCount = PlayerCount;
         maxPlayers = MaxPlayers;
+    }
+
+    public String getFullAddress()
+    {
+        return addr + ":" + port;
     }
 }

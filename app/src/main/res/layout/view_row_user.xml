@@ -4,7 +4,7 @@
             android:id="@+id/user_cell"
             android:orientation="horizontal" android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:background="@color/grey"
+            android:background="@color/charcoal"
             android:weightSum="5"
             >
 
@@ -51,8 +51,9 @@
                 android:layout_toRightOf="@id/icon"
                 android:gravity="center_vertical"
                 android:text="rank: 5"
+                android:textColor="@color/white"
                 android:textSize="12sp"
-                android:paddingRight="2dp"/>
+                android:paddingRight="10dp"/>
             <TextView
                 android:id="@+id/kill_stat"
                 android:layout_width="wrap_content"
@@ -62,7 +63,9 @@
                 android:layout_toRightOf="@id/icon"
                 android:gravity="center_vertical"
                 android:text="Kills: 52"
-                android:textSize="12sp" />
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                android:paddingRight="10dp"/>
             <TextView
                 android:id="@+id/headshots_stat"
                 android:layout_width="wrap_content"
@@ -72,14 +75,22 @@
                 android:layout_toRightOf="@id/icon"
                 android:gravity="center_vertical"
                 android:text="HS: 52"
-                android:textSize="12sp" />
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                android:paddingRight="10dp"/>
         </LinearLayout>
     </LinearLayout>
 
     <ImageView
         android:layout_width="0dp"
         android:layout_weight="1"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginRight="0dp"
+        android:gravity="center|right"
         android:layout_height="match_parent"
-        android:src="@drawable/icon_rss"/>
+        android:src="@drawable/icon_arrow"
+        android:alpha="1"
+        />
 
 </LinearLayout>

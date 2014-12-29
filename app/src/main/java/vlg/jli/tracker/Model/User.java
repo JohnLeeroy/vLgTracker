@@ -1,5 +1,8 @@
 package vlg.jli.tracker.Model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.ArrayList;
 import java.util.Dictionary;
 import java.util.Enumeration;
@@ -11,7 +14,7 @@ import java.util.Set;
 /**
  * Created by johnli on 12/1/14.
  */
-public class User {
+public class User implements Parcelable{
     public String id;
     public String name;
     public String avatar;
@@ -31,11 +34,6 @@ public class User {
     public int shots;
 
     public String country;
-
-
-
-
-
 
     int killstreak;
     int deathstreak;
@@ -85,4 +83,62 @@ public class User {
         me.time = 60*60&412;
         return me;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(name);
+        parcel.writeString(id);
+        parcel.writeString(steamId);
+        parcel.writeString(clanName);
+        parcel.writeString(activity);
+        parcel.writeString(country);
+
+        parcel.writeInt(rank);
+        parcel.writeInt(skill);
+        parcel.writeInt(kills);
+        parcel.writeInt(deaths);
+        parcel.writeInt(assists);
+
+        parcel.writeInt(headshots);
+        parcel.writeInt(hits);
+        parcel.writeInt(shots);
+        parcel.writeInt(time);
+    }
+
+    public  User(Parcel in)
+    {
+        name = in.readString();
+        id = in.readString();
+        steamId = in.readString();
+        clanName = in.readString();
+        activity = in.readString();
+        country = in.readString();
+
+        rank = in.readInt();
+        kills = in.readInt();
+        kills = in.readInt();
+        deaths = in.readInt();
+        assists = in.readInt();
+
+        headshots = in.readInt();
+        hits = in.readInt();
+        shots = in.readInt();
+        time = in.readInt();
+    }
+
+    // this is used to regenerate your object. All Parcelables must have a CREATOR that implements these two methods
+    public static final Parcelable.Creator<User> CREATOR = new Parcelable.Creator<User>() {
+        public User createFromParcel(Parcel in) {
+            return new User(in);
+        }
+
+        public User[] newArray(int size) {
+            return new User[size];
+        }
+    };
 }

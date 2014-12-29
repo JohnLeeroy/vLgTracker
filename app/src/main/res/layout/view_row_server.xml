@@ -4,7 +4,7 @@
     android:id="@+id/server_cell"
     android:orientation="horizontal" android:layout_width="match_parent"
     android:layout_height="60dp"
-    android:background="@color/grey"
+    android:background="@color/charcoal"
     android:weightSum="100"
     >
 
@@ -24,32 +24,33 @@
         android:layout_weight="70"
         android:layout_height="match_parent"
         android:orientation="vertical">
-    <TextView
-        android:id="@+id/server_title"
-        android:layout_width="fill_parent"
-        android:layout_height="26dip"
-        android:layout_marginTop="5dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_toRightOf="@id/icon"
-        android:ellipsize="marquee"
-        android:singleLine="true"
-        android:text="Description"
-        android:textColor="@color/white"
-        android:textSize="18sp" />
+        <TextView
+            android:id="@+id/server_title"
+            android:layout_width="fill_parent"
+            android:layout_height="26dip"
+            android:layout_marginTop="5dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_toRightOf="@id/icon"
+            android:ellipsize="marquee"
+            android:singleLine="true"
+            android:text="Description"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
 
-    <TextView
-        android:id="@+id/map"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/server_title"
-        android:layout_alignParentRight="true"
-        android:layout_marginTop="1dp"
-        android:layout_alignWithParentIfMissing="true"
-        android:layout_toRightOf="@id/icon"
-        android:gravity="center_vertical"
-        android:text="Example application"
-        android:textSize="12sp" />
+        <TextView
+            android:id="@+id/map"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/server_title"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="1dp"
+            android:layout_alignWithParentIfMissing="true"
+            android:layout_toRightOf="@id/icon"
+            android:gravity="center_vertical"
+            android:text="Example application"
+            android:textColor="@color/white"
+            android:textSize="12sp" />
     </LinearLayout>
 
     <ImageView

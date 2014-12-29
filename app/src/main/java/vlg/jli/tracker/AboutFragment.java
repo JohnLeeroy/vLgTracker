@@ -1,11 +1,12 @@
 package vlg.jli.tracker;
 
-import android.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.ListView;
 
 /**
@@ -17,8 +18,11 @@ public class AboutFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.view_about, container, false);
         WebView webView = (WebView)rootView.findViewById(R.id.about_webview);
+        webView.setWebViewClient(new WebViewClient());                      //prevents transferring control to default browser
+        webView.getSettings().setBuiltInZoomControls(true);
+        webView.getSettings().setLoadWithOverviewMode(true);
+        webView.getSettings().setUseWideViewPort(true);
         webView.loadUrl("http://vlgsite.com/forum/");
         return rootView;
     }
-
 }

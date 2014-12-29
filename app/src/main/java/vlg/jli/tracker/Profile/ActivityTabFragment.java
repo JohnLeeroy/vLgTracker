@@ -1,8 +1,8 @@
 package vlg.jli.tracker.Profile;
 
-import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,10 +14,10 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-import vlg.jli.tracker.Model.Activity;
-import vlg.jli.tracker.Model.ActivityList;
-import vlg.jli.tracker.Model.Server;
-import vlg.jli.tracker.Model.ServerList;
+import vlg.jli.tracker.AsyncListener;
+import vlg.jli.tracker.GameME.GameMEAPI;
+import vlg.jli.tracker.Model.VLGActivity;
+import vlg.jli.tracker.Model.VLGActivityList;
 import vlg.jli.tracker.R;
 
 /**
@@ -39,24 +39,24 @@ public class ActivityTabFragment extends Fragment {
 
     void init()
     {
-        ActivityList activityList = new ActivityList();
-        ActivityListAdapter adapter = new ActivityListAdapter(getActivity(), activityList.data);
+        VLGActivityList VLGActivityList = new VLGActivityList();
+        ActivityListAdapter adapter = new ActivityListAdapter(getActivity(), VLGActivityList.data);
         activityListView.setAdapter(adapter);
     }
 
-    public class ActivityListAdapter extends ArrayAdapter<Activity> {
-        public ActivityListAdapter(Context context, ArrayList<Activity> activities) {
+    public class ActivityListAdapter extends ArrayAdapter<VLGActivity> {
+        public ActivityListAdapter(Context context, ArrayList<VLGActivity> activities) {
             super(context, 0, activities);
         }
 
-        public ActivityListAdapter(Context context, List<Activity> activities) {
+        public ActivityListAdapter(Context context, List<VLGActivity> activities) {
             super(context, 0, activities);
         }
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             // Get the data item for this position
-            Activity activity = getItem(position);
+            VLGActivity VLGActivity = getItem(position);
             // Check if an existing view is being reused, otherwise inflate the view
             if (convertView == null) {
                 convertView = LayoutInflater.from(getContext()).inflate(R.layout.view_row_activity, parent, false);
@@ -65,8 +65,8 @@ public class ActivityTabFragment extends Fragment {
             TextView header = (TextView) convertView.findViewById(R.id.activity_title);
             TextView body = (TextView) convertView.findViewById(R.id.activity_body);
 
-            header.setText(activity.header);
-            body.setText(activity.body);
+            header.setText(VLGActivity.header);
+            body.setText(VLGActivity.body);
 
             convertView.setOnClickListener(new View.OnClickListener() {
                 @Override

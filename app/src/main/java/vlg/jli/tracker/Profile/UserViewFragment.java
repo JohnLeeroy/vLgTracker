@@ -1,43 +1,59 @@
 package vlg.jli.tracker.Profile;
 
-import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import vlg.jli.tracker.GameME.GameMECache;
 import vlg.jli.tracker.Model.User;
 import vlg.jli.tracker.R;
 
 /**
  * Created by johnli on 12/1/14.
  */
-public class ProfileTabFragment extends Fragment{
+public class UserViewFragment extends Fragment {
     ListView activityListView;
+    UserProfileAdapter adapter;
+    User currentUser;
+
+    Button setMainUserButton;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.view_profile_user, container, false);
         activityListView = (ListView)rootView.findViewById(R.id.user_profile_list_view);
+        setMainUserButton = (Button)rootView.findViewById(R.id.user_set_main_user_button);
+        setMainUserButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onClickSetAsMainUser(view);
+            }
+        });
         init();
         return  rootView;
     }
 
     void init()
     {
-        User me = User.getRed();
+        User me = GameMECache.getInstance(getActivity()).mainUser;
+        if(me == null)
+            me = User.getRed();
+
         List<String[]> data = me.convertToList();
 
-        UserProfileAdapter adapter = new UserProfileAdapter(getActivity(), data);
+        adapter = new UserProfileAdapter(getActivity(), data);
         activityListView.setAdapter(adapter);
     }
 
@@ -74,5 +90,27 @@ public class ProfileTabFragment extends Fragment{
             // Return the completed view to render on screen
             return convertView;
         }
+    }
+
+    public void onClickSetAsMainUser(View v)
+    {
+        try {
+            GameMECache.getInstance(getActivity()).saveUserPrefs(currentUser);
+        }
+        catch (Exception e)
+        {
+
+        }
+    }
+
+    public void setUser(User user)
+    {
+        currentUser = user;
+        List<String[]> data = user.convertToList();
+        adapter.clear();
+        adapter.addAll(data);
+        adapter.notifyDataSetChanged();
+
+        setMainUserButton.setVisibility(View.VISIBLE);
     }
 }

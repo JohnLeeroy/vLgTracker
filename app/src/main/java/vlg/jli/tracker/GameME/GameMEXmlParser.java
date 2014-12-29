@@ -1,4 +1,4 @@
-package vlg.jli.tracker;
+package vlg.jli.tracker.GameME;
 
 import android.util.Xml;
 
@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import vlg.jli.tracker.Model.Server;
+import vlg.jli.tracker.Model.ServerPlayer;
 import vlg.jli.tracker.Model.User;
 
 /**
@@ -19,7 +20,7 @@ import vlg.jli.tracker.Model.User;
 public class GameMEXmlParser {
     private static final String ns = null;
 
-    // We don't use namespaces
+// PARSE
     public List<Server> parse(InputStream in) throws XmlPullParserException, IOException {
         try {
             XmlPullParser parser = Xml.newPullParser();
@@ -31,6 +32,107 @@ public class GameMEXmlParser {
             in.close();
         }
     }
+
+    public List<ServerPlayer> parseForPlayerList(InputStream in) throws XmlPullParserException, IOException {
+        try {
+            XmlPullParser parser = Xml.newPullParser();
+            parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
+            parser.setInput(in, null);
+            parser.nextTag();
+            return parseForPlayerList(parser);
+        } finally {
+            in.close();
+        }
+    }
+
+    public List<User> parseForUserList(InputStream in) throws XmlPullParserException, IOException {
+        try {
+            XmlPullParser parser = Xml.newPullParser();
+            parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
+            parser.setInput(in, null);
+            parser.nextTag();
+            return parseForUserList(parser);
+        } finally {
+            in.close();
+        }
+    }
+    //InputStream in
+    List<ServerPlayer> parseForPlayerList(XmlPullParser parser) throws XmlPullParserException, IOException {
+        List<ServerPlayer> entries = new ArrayList<ServerPlayer>();
+
+        parser.require(XmlPullParser.START_TAG, ns, "gameME");
+        while (parser.next() != XmlPullParser.END_TAG) {
+            if (parser.getEventType() != XmlPullParser.START_TAG) {
+                continue;
+            }
+            String name = parser.getName();
+            // Starts by looking for the entry tag
+            if (name.equals("serverinfo")) {
+                parser.require(XmlPullParser.START_TAG, ns, "serverinfo");
+                while (parser.next() != XmlPullParser.END_TAG) {
+                    if (parser.getEventType() != XmlPullParser.START_TAG)
+                        continue;
+
+                    name = parser.getName();
+                    if (name.equals("server")) {
+                        parser.require(XmlPullParser.START_TAG, ns, "server");
+                        while (parser.next() != XmlPullParser.END_TAG) {
+                            //if (parser.getEventType() != XmlPullParser.START_TAG)
+                             //   continue;
+
+                            name = parser.getName();
+                            if (name.equals("players")) {
+                                entries = readServerPlayerList(parser);
+                            }
+                            else
+                                skip(parser);
+                        }
+                    }
+                    else
+                        skip(parser);
+                }
+            }
+            else {
+                skip(parser);
+            }
+        }
+        return entries;
+    }
+
+    //InputStream in
+    List<User> parseForUserList(XmlPullParser parser) throws XmlPullParserException, IOException {
+        List<User> entries = new ArrayList<User>();
+
+        parser.require(XmlPullParser.START_TAG, ns, "gameME");
+        while (parser.next() != XmlPullParser.END_TAG) {
+            if (parser.getEventType() != XmlPullParser.START_TAG) {
+                continue;
+            }
+            String name = parser.getName();
+            // Starts by looking for the entry tag
+            if (name.equals("playerlist")) {
+                entries = readUsers(parser);
+                /*parser.require(XmlPullParser.START_TAG, ns, "playerlist");
+                while (parser.next() != XmlPullParser.END_TAG) {
+                    if (parser.getEventType() != XmlPullParser.START_TAG)
+                        continue;
+
+                    name = parser.getName();
+                    if (name.equals("player")) {
+                        entries = readUsers(parser);
+                    }
+                    else
+                        skip(parser);
+                }
+                */
+            }
+            else {
+                skip(parser);
+            }
+        }
+        return entries;
+    }
+
 
     //InputStream in
     List<Server> parseForServer(XmlPullParser parser) throws XmlPullParserException, IOException {
@@ -71,6 +173,54 @@ public class GameMEXmlParser {
             }
         }
         return user;
+    }
+
+
+//////READ
+    List<ServerPlayer> readServerPlayerList(XmlPullParser parser) throws XmlPullParserException, IOException {
+        List<ServerPlayer> users = new ArrayList<ServerPlayer>();
+        parser.require(XmlPullParser.START_TAG, ns, "players");
+        String title = null;
+        String summary = null;
+        String link = null;
+        while (parser.next() != XmlPullParser.END_TAG) {
+            if (parser.getEventType() != XmlPullParser.START_TAG) {
+                continue;
+            }
+            String name = parser.getName();
+            if(name.equals("player"))
+            {
+                ServerPlayer player = getServerPlayer(parser);
+                users.add(player);
+            }
+            else
+                skip(parser);
+        }
+
+        return users;
+    }
+
+    List<User> readPlayerList(XmlPullParser parser) throws XmlPullParserException, IOException {
+        List<User> users = new ArrayList<User>();
+        parser.require(XmlPullParser.START_TAG, ns, "players");
+        String title = null;
+        String summary = null;
+        String link = null;
+        while (parser.next() != XmlPullParser.END_TAG) {
+            if (parser.getEventType() != XmlPullParser.START_TAG) {
+                continue;
+            }
+            String name = parser.getName();
+            if(name.equals("player"))
+            {
+                User user = getUser(parser);
+                users.add(user);
+            }
+            else
+                skip(parser);
+        }
+
+        return users;
     }
 
     List<Server> readServers(XmlPullParser parser) throws XmlPullParserException, IOException {
@@ -116,6 +266,46 @@ public class GameMEXmlParser {
 
         return users;
     }
+    /*
+
+    public String name;
+    public String steamdId;
+    public String team;
+    public int kills;
+    public int deaths;
+    public int skill;
+
+     */
+//// GET
+    ServerPlayer getServerPlayer(XmlPullParser parser) throws XmlPullParserException, IOException {
+        ServerPlayer user = new ServerPlayer();
+
+        parser.require(XmlPullParser.START_TAG, ns, "player");
+        while(parser.next() != XmlPullParser.END_TAG)
+        {
+            String key = parser.getName();
+            parser.require(XmlPullParser.START_TAG, ns, key);
+
+            if (key.equals("name")) {
+                user.name = readText(parser);
+            }  else if (key.equals("uniqueid")) {
+                user.steamdId = readText(parser);
+            //} else if (key.equals("avatar")) {
+                //user.imageUrl = readText(parser);
+            } else if (key.equals("skill")) {
+                user.skill = Integer.parseInt(readText(parser));
+            } else if (key.equals("kills")) {
+                user.kills = Integer.parseInt(readText(parser));
+            } else if (key.equals("deaths")) {
+                user.deaths = Integer.parseInt(readText(parser));
+            } else if (key.equals("team")) {
+                user.team = readText(parser);
+            }else
+                skip(parser);
+            parser.require(XmlPullParser.END_TAG, ns, key);
+        }
+        return user;
+    }
 
     User getUser(XmlPullParser parser) throws XmlPullParserException, IOException {
         User user = new User();
@@ -132,6 +322,7 @@ public class GameMEXmlParser {
             }  else if (key.equals("uniqueid")) {
                 user.steamId = readText(parser);
             } else if (key.equals("avatar")) {
+                skip(parser);
                 //user.imageUrl = readText(parser);
             } else if (key.equals("activity")) {
                 user.activity = readText(parser);
