@@ -10,9 +10,11 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import vlg.jli.tracker.Model.ExpandedUser;
 import vlg.jli.tracker.Model.Server;
 import vlg.jli.tracker.Model.ServerPlayer;
 import vlg.jli.tracker.Model.User;
+import vlg.jli.tracker.Model.Weapon;
 
 /**
  * Created by johnli on 12/2/14.
@@ -21,6 +23,47 @@ public class GameMEXmlParser {
     private static final String ns = null;
 
 // PARSE
+    public User parseForUser(InputStream in) throws XmlPullParserException, IOException {
+
+        User user = new User();
+        try {
+            XmlPullParser parser = Xml.newPullParser();
+            parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
+            parser.setInput(in, null);
+            parser.nextTag();
+
+            parser.require(XmlPullParser.START_TAG, ns, "gameME");
+            while (parser.next() != XmlPullParser.END_TAG) {
+                if (parser.getEventType() != XmlPullParser.START_TAG) {
+                    continue;
+                }
+                String name = parser.getName();
+                // Starts by looking for the entry tag
+                if (name.equals("playerinfo")) {
+                    parser.require(XmlPullParser.START_TAG, ns, "playerinfo");
+                    while (parser.next() != XmlPullParser.END_TAG) {
+                        if (parser.getEventType() != XmlPullParser.START_TAG)
+                            continue;
+
+                        name = parser.getName();
+                        if (name.equals("player")) {
+                            user = getUser(parser);
+                        }
+                        else
+                            skip(parser);
+                    }
+                }
+                else {
+                    skip(parser);
+                }
+            }
+        } finally {
+            in.close();
+        }
+
+        return user;
+    }
+
     public List<Server> parse(InputStream in) throws XmlPullParserException, IOException {
         try {
             XmlPullParser parser = Xml.newPullParser();
@@ -132,7 +175,6 @@ public class GameMEXmlParser {
         }
         return entries;
     }
-
 
     //InputStream in
     List<Server> parseForServer(XmlPullParser parser) throws XmlPullParserException, IOException {
@@ -246,7 +288,6 @@ public class GameMEXmlParser {
         return servers;
     }
 
-
     List<User> readUsers(XmlPullParser parser) throws XmlPullParserException, IOException {
         List<User> users = new ArrayList<User>();
         parser.require(XmlPullParser.START_TAG, ns, "playerlist");
@@ -266,16 +307,7 @@ public class GameMEXmlParser {
 
         return users;
     }
-    /*
 
-    public String name;
-    public String steamdId;
-    public String team;
-    public int kills;
-    public int deaths;
-    public int skill;
-
-     */
 //// GET
     ServerPlayer getServerPlayer(XmlPullParser parser) throws XmlPullParserException, IOException {
         ServerPlayer user = new ServerPlayer();
@@ -308,7 +340,7 @@ public class GameMEXmlParser {
     }
 
     User getUser(XmlPullParser parser) throws XmlPullParserException, IOException {
-        User user = new User();
+        ExpandedUser user = new ExpandedUser();
 
         parser.require(XmlPullParser.START_TAG, ns, "player");
         while(parser.next() != XmlPullParser.END_TAG)
@@ -344,8 +376,47 @@ public class GameMEXmlParser {
                 user.assists = Integer.parseInt(readText(parser));
             } else if (key.equals("cn")) {
                 user.country = readText(parser);
-            }
-            else
+            } else if (key.equals("hits")) {
+                user.hits = Integer.parseInt(readText(parser));
+            } else if (key.equals("shots")) {
+                user.shots = Integer.parseInt(readText(parser));
+            } else if (key.equals("killstreak")) {
+                user.killstreak = Integer.parseInt(readText(parser));
+            } else if (key.equals("deathstreak")) {
+                user.deathstreak = Integer.parseInt(readText(parser));
+            } else if (key.equals("wins")) {
+                user.wins = Integer.parseInt(readText(parser));
+            } else if (key.equals("losses")) {
+                user.losses = Integer.parseInt(readText(parser));
+            } else if (key.equals("rounds")) {
+                user.roundCount = Integer.parseInt(readText(parser));
+            } else if (key.equals("survived")) {
+                user.roundSurvivedCount = (int)Float.parseFloat(readText(parser));
+            } else if (key.equals("suicides")) {
+                user.suicideCount = Integer.parseInt(readText(parser));
+            }else if(key.equals("favweapon")) {
+                //skip(parser);
+                //continue;
+
+                Weapon favWeapon = new Weapon();
+                parser.require(XmlPullParser.START_TAG, ns, "favweapon");
+                while(parser.next() != XmlPullParser.END_TAG) {
+
+                    String altKey = parser.getName();
+                    parser.require(XmlPullParser.START_TAG, ns, altKey);
+                    if (altKey.equals("code")) {
+                        favWeapon.code = readText(parser);
+                    } else if (altKey.equals("name")) {
+                        favWeapon.name = readText(parser);
+                    } else if (altKey.equals("kills")) {
+                        favWeapon.killCount = Integer.parseInt(readText(parser));
+                    }else
+                        skip(parser);
+                    parser.require(XmlPullParser.END_TAG, ns, altKey);
+                }
+                user.favoriteWeapon = favWeapon;
+
+            }else
                 skip(parser);
             parser.require(XmlPullParser.END_TAG, ns, key);
         }

@@ -16,9 +16,9 @@ public class VLGActivityList {
     {
         data = new ArrayList<VLGActivity>();
         data.add(new VLGActivity("Rank Up", "You reached rank 52 in the vLg Competitive 7v7 128tick server. Great Work!"));
-        data.add(new VLGActivity("V0nk Gets Sky High", "Rumors are spreading that v0nk is baked beyond his mind today. Completely incoherent, he wrecks the minions of hell in Diablo 3."));
-        data.add(new VLGActivity("vLg Enters LoL Semi-finals", "Thanks to the leadership of [who?], the team has made some amazing plays that advanced them to the next round."));
-        data.add(new VLGActivity("A Wild Janna Appears", "The rare specimen, Janna, has appeared in vent."));
+        data.add(new VLGActivity("Rage quit is in the air", "Oh Gosh and J0hnny has left a m00b and Childish in the middle of a competitive match. m00b swears he will never play competitive with them again."));
+        data.add(new VLGActivity("Janna doesn't play nice", "Our resident LoL fanatic continues to play without inviting her mates. "));
+        data.add(new VLGActivity("vLg has switched to Teamspeak!", "The old ventrilo server was getting too small. Everyone is starting to enjoy the new space."));
         data.add(new VLGActivity("More vLg maps coming", "Sickminds is preparing to release five new awp maps to the vLg server."));
         data.add(new VLGActivity("M00b's Internet Cuts Out. Again!", "As usual, m00b is having some shotty internet issues. Stop downloading all those cat pictures."));
         data.add(new VLGActivity("New Smite God", "After demonstrating god-like gaming abilities, Hi-Rez makes a God based on Red. To be released in the next upcoming patch."));

@@ -15,6 +15,8 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import vlg.jli.tracker.AsyncListener;
+import vlg.jli.tracker.GameME.GameMEAPI;
 import vlg.jli.tracker.GameME.GameMECache;
 import vlg.jli.tracker.Model.User;
 import vlg.jli.tracker.R;
@@ -41,6 +43,10 @@ public class UserViewFragment extends Fragment {
                 onClickSetAsMainUser(view);
             }
         });
+
+        adapter = new UserProfileAdapter(getActivity(), new ArrayList<String[]>());
+        activityListView.setAdapter(adapter);
+
         init();
         return  rootView;
     }
@@ -51,10 +57,7 @@ public class UserViewFragment extends Fragment {
         if(me == null)
             me = User.getRed();
 
-        List<String[]> data = me.convertToList();
-
-        adapter = new UserProfileAdapter(getActivity(), data);
-        activityListView.setAdapter(adapter);
+        setUser(me);
     }
 
     public class UserProfileAdapter extends ArrayAdapter<String[]> {
@@ -105,6 +108,9 @@ public class UserViewFragment extends Fragment {
 
     public void setUser(User user)
     {
+        if(user == null)
+            return;
+
         currentUser = user;
         List<String[]> data = user.convertToList();
         adapter.clear();

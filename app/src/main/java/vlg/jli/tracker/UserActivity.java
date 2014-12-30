@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentManager;
 import android.view.MenuItem;
 import android.view.View;
 
+import vlg.jli.tracker.GameME.GameMEAPI;
 import vlg.jli.tracker.GameME.GameMECache;
 import vlg.jli.tracker.Model.User;
 import vlg.jli.tracker.Profile.UserViewFragment;
@@ -69,6 +70,7 @@ public class UserActivity extends FragmentActivity {
 
     void updateUser(final User user)
     {
+        final GameMEAPI api = new GameMEAPI(this);
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -78,7 +80,13 @@ public class UserActivity extends FragmentActivity {
                     public void run() {
                         currentUser = user;
                         userFrag.setUser(user);
-                        //System.out.println("XXX");                 //add your code here
+                        api.getUser(currentUser.steamId, new AsyncListener() {
+                            @Override
+                            public void onResult(Object response, boolean isSuccess) {
+                                User user = (User)response;
+                                userFrag.setUser(user);
+                            }
+                        });
                     }
                 }, 100);
             }

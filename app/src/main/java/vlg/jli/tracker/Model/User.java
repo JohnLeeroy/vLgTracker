@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Dictionary;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -35,13 +36,15 @@ public class User implements Parcelable{
 
     public String country;
 
-    int killstreak;
-    int deathstreak;
-    int wins;
-    int losses;
-    int roundCount;
-    int roundSurvivedCount;
-
+    public int killstreak = -1;
+    public int deathstreak = -1;
+    public int wins = -1;
+    public int losses = -1;
+    public int roundCount = -1;
+    public int roundSurvivedCount = -1;
+    public int suicideCount = -1;
+    public int teamKills = -1;
+    public Weapon favoriteWeapon;
 
     public User(String Name, int Rank, int Kills, int Deaths) {
         name = Name;
@@ -66,6 +69,27 @@ public class User implements Parcelable{
         data.add(new String[]{"Headshots",String.valueOf(headshots)});
         data.add(new String[]{"Accuracy",String.valueOf(accuracy)});
         data.add(new String[]{"Time Played",String.valueOf(time)});
+
+        data.add(new String[]{"Kill Streak", String.valueOf(killstreak)});
+        data.add(new String[]{"Death Streak",String.valueOf(deathstreak)});
+        data.add(new String[]{"Wins",String.valueOf(wins)});
+        data.add(new String[]{"Losses",String.valueOf(losses)});
+        data.add(new String[]{"Rounds",String.valueOf(roundCount)});
+        data.add(new String[]{"Rounds Survived",String.valueOf(roundSurvivedCount)});
+        data.add(new String[]{"Suicides",String.valueOf(suicideCount)});
+
+        if(favoriteWeapon != null) {
+            data.add(new String[]{"Favorite Weapon", favoriteWeapon.name});
+            data.add(new String[]{"Weapon Kills", String.valueOf(favoriteWeapon.killCount)});
+        }
+        //Removes all non-filled in fields
+        /*for (Iterator<String[]> iter = data.listIterator(); iter.hasNext(); ) {
+            String[] info = iter.next();
+            if (info[1].equals("-1")) {
+                iter.remove();
+            }
+        }*/
+
         return data;
     }
 
@@ -110,7 +134,7 @@ public class User implements Parcelable{
         parcel.writeInt(time);
     }
 
-    public  User(Parcel in)
+    public User(Parcel in)
     {
         name = in.readString();
         id = in.readString();
@@ -136,7 +160,6 @@ public class User implements Parcelable{
         public User createFromParcel(Parcel in) {
             return new User(in);
         }
-
         public User[] newArray(int size) {
             return new User[size];
         }

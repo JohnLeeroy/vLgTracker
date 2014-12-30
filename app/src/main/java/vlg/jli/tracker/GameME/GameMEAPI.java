@@ -31,6 +31,11 @@ public class GameMEAPI {
         new DownloadUserSearchXmlTask("vlg").execute(getUserSearchResultListener);
     }
 
+    public void getUser(String steamId, AsyncListener getUserListener)
+    {
+        new DownloadUserXmlTask(steamId).execute(getUserListener);
+    }
+
     public void getUserSearch(String query, AsyncListener getUserSearchResultListener)
     {
         new DownloadUserSearchXmlTask(query).execute(getUserSearchResultListener);
@@ -44,6 +49,43 @@ public class GameMEAPI {
     public void getServerPlayerList(String addr, AsyncListener getServerInfoListener)
     {
         new DownloadServerInfoXmlTask(addr).execute(getServerInfoListener);
+    }
+
+    public class DownloadUserXmlTask extends AsyncTask<AsyncListener, Void, User> {
+        AsyncListener onFinish;
+        String steamId;
+
+        public DownloadUserXmlTask(String SteamId)
+        {
+            steamId = SteamId;
+        }
+        @Override
+        protected User doInBackground(AsyncListener ... listener) {
+            onFinish = listener[0];
+            User user;
+            try {
+                InputStream stream = null;
+                GameMEXmlParser api = new GameMEXmlParser();
+                try {
+                    stream = downloadUrl("http://vlgsite.gameme.com/api/playerinfo/csgo2/" + steamId);
+                    user = api.parseForUser(stream);
+                } finally {
+                    if (stream != null) {
+                        stream.close();
+                    }
+                }
+            } catch (IOException e) {
+                return null;//"Connection Error";
+            } catch (XmlPullParserException e) {
+                return null;//"XML Error";
+            }
+            return user;
+        }
+
+        @Override
+        protected void onPostExecute(User result) {
+            onFinish.onResult(result, true);
+        }
     }
 
     public class DownloadUserSearchXmlTask extends AsyncTask<AsyncListener, Void, List<User>> {
