@@ -8,8 +8,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import com.koushikdutta.ion.Ion;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -74,6 +77,9 @@ public class UserListFragment extends Fragment
             TextView rank = (TextView) convertView.findViewById(R.id.rank_stat);
             TextView kill = (TextView) convertView.findViewById(R.id.kill_stat);
             TextView headshot = (TextView) convertView.findViewById(R.id.headshots_stat);
+
+            ImageView profilePic = (ImageView) convertView.findViewById(R.id.user_icon);
+            Ion.with(getActivity()).load(user.avatar).intoImageView(profilePic);
             rank.setText("Rank: " + user.rank);
             kill.setText("Kills: " + user.kills);
             headshot.setText("HS: " + user.headshots);

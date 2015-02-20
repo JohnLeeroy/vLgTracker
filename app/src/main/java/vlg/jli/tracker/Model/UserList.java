@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * Created by johnli on 12/1/14.
  */
-public class UserList {
+public class UserList implements  IDefaultData{
     public List<User> users;
 
     public UserList() {
@@ -21,5 +21,11 @@ public class UserList {
         users.add(new User("vLg | v0nk", 5, 632, 512));
         users.add(new User("vLg | Janna", 6, 555, 598));
     }
+
+    public void initWithDefaultData()
+    {
+        initTestUserList();
+    }
+
 
 }

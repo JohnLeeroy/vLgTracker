@@ -1,4 +1,4 @@
-package vlg.jli.tracker.GameME;
+package vlg.jli.tracker.Service;
 
 import android.content.Context;
 import android.preference.PreferenceManager;

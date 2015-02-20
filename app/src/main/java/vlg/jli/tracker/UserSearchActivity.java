@@ -97,6 +97,8 @@ public class UserSearchActivity extends FragmentActivity {
             User user = (User)adapterView.getItemAtPosition(i);
             intent.putExtra("user",  user);
             startActivity(intent);
+
+            overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
         }
     };
 

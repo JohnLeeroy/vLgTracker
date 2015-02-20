@@ -8,12 +8,18 @@ import vlg.jli.tracker.Model.Server;
 /**
  * Created by johnli on 12/1/14.
  */
-public class ServerList {
+public class ServerList implements IDefaultData{
     public List<Server> servers;
 
     public ServerList() {
         initTestServerList();
     }
+
+    public void initWithDefaultData()
+    {
+        initTestServerList();
+    }
+
     void initTestServerList()
     {
         servers = new ArrayList<Server>();

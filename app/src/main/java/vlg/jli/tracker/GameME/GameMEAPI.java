@@ -18,6 +18,7 @@ import vlg.jli.tracker.Model.User;
 
 /**
  * Created by johnli on 12/25/14.
+ * Interface for getting data from the GameME API
  */
 public class GameMEAPI {
 

@@ -4,17 +4,15 @@ import android.content.Context;
 import android.util.Log;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.List;
 import vlg.jli.tracker.Model.Server;
 import vlg.jli.tracker.Model.ServerPlayer;
 import vlg.jli.tracker.Model.User;
+import vlg.jli.tracker.Service.SettingsProvider;
 
 /**
  * Created by johnli on 12/25/14.

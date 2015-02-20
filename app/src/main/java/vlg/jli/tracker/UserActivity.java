@@ -45,6 +45,7 @@ public class UserActivity extends FragmentActivity {
         switch (item.getItemId()) {
             case android.R.id.home:
                 finish();
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

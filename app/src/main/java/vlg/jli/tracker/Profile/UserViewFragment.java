@@ -9,8 +9,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import com.koushikdutta.ion.Ion;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +31,7 @@ public class UserViewFragment extends Fragment {
     ListView activityListView;
     UserProfileAdapter adapter;
     User currentUser;
+    ImageView profilePicture;
 
     Button setMainUserButton;
 
@@ -44,19 +48,23 @@ public class UserViewFragment extends Fragment {
             }
         });
 
+
+        profilePicture = (ImageView) rootView.findViewById(R.id.user_picture);
+
         adapter = new UserProfileAdapter(getActivity(), new ArrayList<String[]>());
         activityListView.setAdapter(adapter);
 
         init();
+        //profilePicture.setI
         return  rootView;
     }
 
     void init()
     {
         User me = GameMECache.getInstance(getActivity()).mainUser;
-        if(me == null)
+        if(me == null) {
             me = User.getRed();
-
+        }
         setUser(me);
     }
 
@@ -117,6 +125,7 @@ public class UserViewFragment extends Fragment {
         adapter.addAll(data);
         adapter.notifyDataSetChanged();
 
+        Ion.with(getActivity()).load(currentUser.avatar).withBitmap().intoImageView(profilePicture);
         setMainUserButton.setVisibility(View.VISIBLE);
     }
 }

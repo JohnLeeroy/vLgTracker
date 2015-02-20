@@ -1,7 +1,12 @@
 package vlg.jli.tracker.GameME;
 
+import android.graphics.Bitmap;
+import android.util.Log;
 import android.util.Xml;
 
+import org.w3c.dom.CharacterData;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -10,14 +15,13 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import vlg.jli.tracker.Model.ExpandedUser;
 import vlg.jli.tracker.Model.Server;
 import vlg.jli.tracker.Model.ServerPlayer;
 import vlg.jli.tracker.Model.User;
 import vlg.jli.tracker.Model.Weapon;
 
 /**
- * Created by johnli on 12/2/14.
+ * Created by johnli on 12/2/14.ya
  */
 public class GameMEXmlParser {
     private static final String ns = null;
@@ -99,7 +103,7 @@ public class GameMEXmlParser {
             in.close();
         }
     }
-    //InputStream in
+
     List<ServerPlayer> parseForPlayerList(XmlPullParser parser) throws XmlPullParserException, IOException {
         List<ServerPlayer> entries = new ArrayList<ServerPlayer>();
 
@@ -142,7 +146,6 @@ public class GameMEXmlParser {
         return entries;
     }
 
-    //InputStream in
     List<User> parseForUserList(XmlPullParser parser) throws XmlPullParserException, IOException {
         List<User> entries = new ArrayList<User>();
 
@@ -176,7 +179,6 @@ public class GameMEXmlParser {
         return entries;
     }
 
-    //InputStream in
     List<Server> parseForServer(XmlPullParser parser) throws XmlPullParserException, IOException {
         List<Server> entries = new ArrayList<Server>();
 
@@ -216,7 +218,6 @@ public class GameMEXmlParser {
         }
         return user;
     }
-
 
 //////READ
     List<ServerPlayer> readServerPlayerList(XmlPullParser parser) throws XmlPullParserException, IOException {
@@ -308,7 +309,7 @@ public class GameMEXmlParser {
         return users;
     }
 
-//// GET
+//region GET
     ServerPlayer getServerPlayer(XmlPullParser parser) throws XmlPullParserException, IOException {
         ServerPlayer user = new ServerPlayer();
 
@@ -340,7 +341,7 @@ public class GameMEXmlParser {
     }
 
     User getUser(XmlPullParser parser) throws XmlPullParserException, IOException {
-        ExpandedUser user = new ExpandedUser();
+        User user = new User();
 
         parser.require(XmlPullParser.START_TAG, ns, "player");
         while(parser.next() != XmlPullParser.END_TAG)
@@ -354,7 +355,19 @@ public class GameMEXmlParser {
             }  else if (key.equals("uniqueid")) {
                 user.steamId = readText(parser);
             } else if (key.equals("avatar")) {
-                skip(parser);
+                int token = parser.nextToken();
+                while(token!=XmlPullParser.CDSECT){
+                    token = parser.nextToken();
+                }
+                String cdata = parser.getText();
+                user.avatar = cdata;
+                parser.next();
+                //Log.i("Info", cdata);
+                //String result = cdata.substring(cdata.indexOf("src='")+5, cdata.indexOf("jpg")+3);
+                //Log.i("Info", result);
+                //skip(parser);
+
+                //parser.getText();
                 //user.imageUrl = readText(parser);
             } else if (key.equals("activity")) {
                 user.activity = readText(parser);
@@ -395,9 +408,6 @@ public class GameMEXmlParser {
             } else if (key.equals("suicides")) {
                 user.suicideCount = Integer.parseInt(readText(parser));
             }else if(key.equals("favweapon")) {
-                //skip(parser);
-                //continue;
-
                 Weapon favWeapon = new Weapon();
                 parser.require(XmlPullParser.START_TAG, ns, "favweapon");
                 while(parser.next() != XmlPullParser.END_TAG) {
@@ -453,6 +463,8 @@ public class GameMEXmlParser {
         return server;
     }
 
+//endregion
+
     private String readText(XmlPullParser parser) throws IOException, XmlPullParserException {
         String result = "";
         if (parser.next() == XmlPullParser.TEXT) {
@@ -460,6 +472,15 @@ public class GameMEXmlParser {
             parser.nextTag();
         }
         return result;
+    }
+
+    public static String getCharacterDataFromElement(Element e) {
+        Node child = e.getFirstChild();
+        if (child instanceof CharacterData) {
+            CharacterData cd = (CharacterData) child;
+            return cd.getData();
+        }
+        return "";
     }
 
     // Skips tags the parser isn't interested in. Uses depth to handle nested tags. i.e.,

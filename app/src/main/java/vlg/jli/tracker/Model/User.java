@@ -15,7 +15,7 @@ import java.util.Set;
 /**
  * Created by johnli on 12/1/14.
  */
-public class User implements Parcelable{
+public class User implements Parcelable, IDefaultData{
     public String id;
     public String name;
     public String avatar;
@@ -164,4 +164,18 @@ public class User implements Parcelable{
             return new User[size];
         }
     };
+
+    public void initWithDefaultData()
+    {
+        this.name = "vLg | Red";
+        this.id = "1";
+        this.kills = 1337;
+        this.deaths = 213;
+        this.assists = 832;
+        this.headshots = 612;
+        this.hits = 32185;
+        this.shots = 124123;
+        this.time = 60*60&412;
+    }
+
 }
