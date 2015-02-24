@@ -20,6 +20,23 @@ public class ServerList implements IDefaultData{
         initTestServerList();
     }
 
+    void removeNonCSGOServers()
+    {
+        List<Server> toRemove = new ArrayList<Server>();
+
+        Server currentServer;
+        for(int i = 0; i < servers.size(); i++)
+        {
+            currentServer = servers.get(i);
+            if(currentServer.game != "csgo")
+            {
+                toRemove.add(currentServer);
+            }
+        }
+        servers.removeAll(toRemove);
+    }
+
+
     void initTestServerList()
     {
         servers = new ArrayList<Server>();

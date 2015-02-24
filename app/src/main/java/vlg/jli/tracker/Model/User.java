@@ -116,6 +116,7 @@ public class User implements Parcelable, IDefaultData{
     @Override
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeString(name);
+        parcel.writeString(avatar);
         parcel.writeString(id);
         parcel.writeString(steamId);
         parcel.writeString(clanName);
@@ -137,6 +138,7 @@ public class User implements Parcelable, IDefaultData{
     public User(Parcel in)
     {
         name = in.readString();
+        avatar = in.readString();
         id = in.readString();
         steamId = in.readString();
         clanName = in.readString();

@@ -10,7 +10,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.List;
+
 import vlg.jli.tracker.Model.Server;
+import vlg.jli.tracker.Model.User;
 import vlg.jli.tracker.R;
 
 
@@ -28,6 +31,7 @@ public class ServerPagerFragment extends Fragment {
     Server selectedServer;
 
     ServerInfoFragment serverInfoFragment;
+    ServerListFragment serverListFragment;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -72,9 +76,9 @@ public class ServerPagerFragment extends Fragment {
         @Override
         public Fragment getItem(int i) {
             if(i == 0) {
-                ServerListFragment frag = new ServerListFragment();
-                frag.serverRowSelectedListener = serverRowSelectedListener;
-                return frag;
+                serverListFragment = new ServerListFragment();
+                serverListFragment.serverRowSelectedListener = serverRowSelectedListener;
+                return serverListFragment;
             }
             else if(i == 1)
             {
@@ -84,6 +88,11 @@ public class ServerPagerFragment extends Fragment {
             }
             return  null;
         }
+    }
+
+    public void updateData(List<Server> data)
+    {
+        serverListFragment.updateData(data);
     }
 }
 

@@ -2,6 +2,7 @@ package vlg.jli.tracker.GameME;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -37,11 +38,19 @@ public class GameMEAPI {
         new DownloadUserXmlTask(steamId).execute(getUserListener);
     }
 
+//Search
     public void getUserSearch(String query, AsyncListener getUserSearchResultListener)
     {
         new DownloadUserSearchXmlTask(query).execute(getUserSearchResultListener);
     }
 
+    public void getServerSearch(String query, AsyncListener getServerSearchResultListener)
+    {
+        Log.d("gmtracker", "Search Server Task");
+        new DownloadServerSearchXmlTask(query).execute(getServerSearchResultListener);
+    }
+
+//Server
     public void getServers(AsyncListener getServerListener)
     {
         new DownloadServerXmlTask().execute(getServerListener);
@@ -50,6 +59,11 @@ public class GameMEAPI {
     public void getServerPlayerList(String addr, AsyncListener getServerInfoListener)
     {
         new DownloadServerInfoXmlTask(addr).execute(getServerInfoListener);
+    }
+
+    public  void getGlobalServerList(AsyncListener getServerListListener)
+    {
+        new DownloadGlobalServerXmlTask().execute(getServerListListener);
     }
 
     public class DownloadUserXmlTask extends AsyncTask<AsyncListener, Void, User> {
@@ -62,14 +76,18 @@ public class GameMEAPI {
         }
         @Override
         protected User doInBackground(AsyncListener ... listener) {
+
+            Log.d("gmtracker", "Start downloadUserXML");
             onFinish = listener[0];
             User user;
             try {
                 InputStream stream = null;
                 GameMEXmlParser api = new GameMEXmlParser();
                 try {
-                    stream = downloadUrl("http://vlgsite.gameme.com/api/playerinfo/csgo2/" + steamId);
+                    stream = downloadUrl("http://api.gameme.com/api/playerinfo/csgo/" + steamId);
                     user = api.parseForUser(stream);
+
+                    Log.d("gmtracker", "End downloadUserXML");
                 } finally {
                     if (stream != null) {
                         stream.close();
@@ -101,6 +119,9 @@ public class GameMEAPI {
         protected List<User> doInBackground(AsyncListener ... listener) {
             onFinish = listener[0];
             try {
+                //http://api.gameme.net/playerlist/csgo/name/vlg
+                //return loadUserList("http://api.gameme.net/playerlist/csgo/name/" + query);
+
                 return loadUserList("http://vlgsite.gameme.com/api/playerlist/csgo2/name/" + query);
             } catch (IOException e) {
                 return null;//"Connection Error";
@@ -115,6 +136,61 @@ public class GameMEAPI {
         }
     }
 
+    public class DownloadServerSearchXmlTask extends AsyncTask<AsyncListener, Void, List<Server>> {
+        AsyncListener onFinish;
+        String query;
+
+        public DownloadServerSearchXmlTask(String sQuery)
+        {
+            query = sQuery;
+        }
+        @Override
+        protected List<Server> doInBackground(AsyncListener ... listener) {
+            onFinish = listener[0];
+            Log.d("gmtracker", "doInBackground");
+            try {
+                //http://api.gameme.net/playerlist/csgo/name/vlg
+                //return loadUserList("http://api.gameme.net/playerlist/csgo/name/" + query);
+
+                return loadGameMEServerXmlFromNetwork("http://api.gameme.net/serverlist/name/" + query);
+            } catch (IOException e) {
+                return null;//"Connection Error";
+            } catch (XmlPullParserException e) {
+                return null;//"XML Error";
+            }
+        }
+
+        @Override
+        protected void onPostExecute(List<Server> result) {
+            onFinish.onResult(result, true);
+        }
+    }
+
+    public class DownloadGlobalServerXmlTask extends AsyncTask<AsyncListener, Void, List<Server>> {
+        AsyncListener onFinish;
+        @Override
+        protected List<Server> doInBackground(AsyncListener ... listener) {
+            onFinish = listener[0];
+            try {
+                Log.d("gmtracker", "Start GetGlobalServerList");
+                List<Server> servers = loadGameMEServerXmlFromNetwork("http://api.gameme.net/serverlist/game/csgo");
+                Log.d("gmtracker", "End GetGlobalServerList");
+
+                return servers;
+            } catch (IOException e) {
+                return null;//"Connection Error";
+            } catch (XmlPullParserException e) {
+                return null;//"XML Error";
+            }
+        }
+
+        @Override
+        protected void onPostExecute(List<Server> result) {
+            GameMECache.getInstance(ctx).servers = result;
+
+            onFinish.onResult(result, true);
+        }
+    }
     public class DownloadServerXmlTask extends AsyncTask<AsyncListener, Void, List<Server>> {
         AsyncListener onFinish;
         @Override
@@ -158,7 +234,11 @@ public class GameMEAPI {
             onFinish = listener[0];
             try {
                 //http://api.gameme.net/serverinfo/74.91.125.229:27015/players
-                return loadServerPlayerList("http://api.gameme.net/serverinfo/" + address + "/players");
+
+                Log.d("gmtracker", "Start GetServerPlayerList");
+                List<ServerPlayer> playerList = loadServerPlayerList("http://api.gameme.net/serverinfo/" + address + "/players");
+                Log.d("gmtracker", "End GetServerPlayerList");
+                return playerList;
             } catch (IOException e) {
                 return null;//"Connection Error";
             } catch (XmlPullParserException e) {
@@ -168,7 +248,7 @@ public class GameMEAPI {
 
         @Override
         protected void onPostExecute(List<ServerPlayer> result) {
-            GameMECache.getInstance(ctx).savePlayerList(address, result);
+            //GameMECache.getInstance(ctx).savePlayerList(address, result);
             onFinish.onResult(result, true);
         }
     }
@@ -200,7 +280,10 @@ public class GameMEAPI {
         GameMEXmlParser api = new GameMEXmlParser();
         List<Server> servers;
         try {
+            Log.d("gmtracker", "Start");
             stream = downloadUrl(urlString);
+
+            Log.d("gmtracker", "End");
             servers = api.parse(stream);
         } finally {
             if (stream != null) {

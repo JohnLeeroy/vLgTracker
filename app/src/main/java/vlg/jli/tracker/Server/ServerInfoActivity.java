@@ -1,17 +1,21 @@
 package vlg.jli.tracker.Server;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,30 +30,71 @@ import vlg.jli.tracker.Model.User;
 import vlg.jli.tracker.R;
 import vlg.jli.tracker.View.ServerInfoRowView;
 
-/**
- * Created by johnli on 12/20/14.
- */
+public class ServerInfoActivity extends Activity implements Observer {
 
-
-public class ServerInfoFragment extends Fragment implements Observer {
     View rootView;
     LinearLayout contentLayout;
     ListView listViewPlayers;
     PlayerListAdapter playerListAdapter;
     Server currentServer;
 
-
+    public ServerInfoActivity()
+    {
+        super();
+    }
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
-        Log.d("GMTracker", "ON CREATE FRAG");
-        rootView = inflater.inflate(R.layout.view_server_info, container, false);
+
+        setContentView(R.layout.activity_server_info);
+        rootView = findViewById(R.id.activity_server_info_root);
         contentLayout = (LinearLayout)rootView.findViewById(R.id.server_info_list);
         listViewPlayers = (ListView)rootView.findViewById(R.id.list_view_player_list);
-        playerListAdapter = new PlayerListAdapter(getActivity(), new ArrayList<ServerPlayer>());
+        playerListAdapter = new PlayerListAdapter(this, new ArrayList<ServerPlayer>());
         listViewPlayers.setAdapter(playerListAdapter);
-        return rootView;
+
+        getActionBar().setHomeButtonEnabled(true);
+        getActionBar().setDisplayHomeAsUpEnabled(true);
+
+        handleIntent(getIntent());
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.server_info, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void handleIntent(Intent intent) {
+        if(intent == null)
+            return;
+
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            Gson gson = new Gson();
+            String serializedServer = getIntent().getStringExtra("server");
+            Server server =  gson.fromJson(serializedServer, Server.class);
+            setServer(server);
+            Log.d("GMTracker", serializedServer);
+            return;
+        }
     }
 
     public void setServer(Server server)
@@ -66,7 +111,7 @@ public class ServerInfoFragment extends Fragment implements Observer {
         currentServer.addObserver(this);
         updateViewWithServer(currentServer);
 
-        GameMEAPI api = new GameMEAPI(getActivity());
+        GameMEAPI api = new GameMEAPI(this);
         api.getServerPlayerList(currentServer.getFullAddress(), new AsyncListener() {
             @Override
             public void onResult(Object response, boolean isSuccess) {
@@ -79,27 +124,27 @@ public class ServerInfoFragment extends Fragment implements Observer {
 
     void updateViewWithServer(Server server)
     {
-        if(getActivity() == null)   //if context is not initialized, errors will occur
+        if(this == null)   //if context is not initialized, errors will occur
             return;
 
         contentLayout.removeAllViewsInLayout();
-        ServerInfoRowView serverNameRow = new ServerInfoRowView(getActivity());
+        ServerInfoRowView serverNameRow = new ServerInfoRowView(this);
         serverNameRow.tvProperty.setText("Server Name: ");
         serverNameRow.tvValue.setText(server.name);
 
-        ServerInfoRowView serverAddressRow = new ServerInfoRowView(getActivity());
+        ServerInfoRowView serverAddressRow = new ServerInfoRowView(this);
         serverAddressRow.tvProperty.setText("Address: ");
         serverAddressRow.tvValue.setText(server.addr + ":" + server.port);
 
-        ServerInfoRowView serverPlayerCount = new ServerInfoRowView(getActivity());
+        ServerInfoRowView serverPlayerCount = new ServerInfoRowView(this);
         serverPlayerCount.tvProperty.setText("Players: ");
         serverPlayerCount.tvValue.setText(server.playerCount + "/" + server.maxPlayers);
 
-        ServerInfoRowView serverMapRow = new ServerInfoRowView(getActivity());
+        ServerInfoRowView serverMapRow = new ServerInfoRowView(this);
         serverMapRow.tvProperty.setText("Map: ");
         serverMapRow.tvValue.setText(server.map);
 
-        ServerInfoRowView playerInfoRow = new ServerInfoRowView(getActivity());
+        ServerInfoRowView playerInfoRow = new ServerInfoRowView(this);
         serverMapRow.tvProperty.setText("Player Names: ");
         serverMapRow.tvValue.setText("Kill/Death");
 
@@ -109,15 +154,24 @@ public class ServerInfoFragment extends Fragment implements Observer {
         contentLayout.addView(serverMapRow);
 
         if(server.playerList != null && server.playerList.size() > 0)
-           updatePlayerList();
+            updatePlayerList();
         else
             playerListAdapter.clear();
     }
+
 
     @Override
     public void update(Observable observable, Object o) {
         updatePlayerList();
     }
+
+    public void updatePlayerList()
+    {
+        playerListAdapter.clear();
+        playerListAdapter.addAll(currentServer.playerList);
+        playerListAdapter.notifyDataSetChanged();
+    }
+
 
     private class PlayerListAdapter extends ArrayAdapter<ServerPlayer> {
         public PlayerListAdapter(Context context, ArrayList<ServerPlayer> players) {
@@ -143,22 +197,5 @@ public class ServerInfoFragment extends Fragment implements Observer {
             val.setText(player.kills + "/" + player.deaths);
             return convertView;
         }
-    }
-
-    public void setRootView(View view)
-    {
-        rootView = view;
-    }
-
-    public void updatePlayerList()
-    {
-        playerListAdapter.clear();
-        playerListAdapter.addAll(currentServer.playerList);
-        playerListAdapter.notifyDataSetChanged();
-    }
-
-    protected void finalize()
-    {
-        currentServer.deleteObserver(this);
     }
 }

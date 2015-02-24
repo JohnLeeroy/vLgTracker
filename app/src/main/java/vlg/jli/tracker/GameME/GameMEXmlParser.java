@@ -323,9 +323,15 @@ public class GameMEXmlParser {
                 user.name = readText(parser);
             }  else if (key.equals("uniqueid")) {
                 user.steamdId = readText(parser);
-            //} else if (key.equals("avatar")) {
-                //user.imageUrl = readText(parser);
-            } else if (key.equals("skill")) {
+             } else if (key.equals("avatar")) {
+                int token = parser.nextToken();
+                while (token != XmlPullParser.CDSECT) {
+                    token = parser.nextToken();
+                }
+                String cdata = parser.getText();
+                user.avatar = cdata;
+                parser.next();
+            }else if (key.equals("skill")) {
                 user.skill = Integer.parseInt(readText(parser));
             } else if (key.equals("kills")) {
                 user.kills = Integer.parseInt(readText(parser));
@@ -447,7 +453,9 @@ public class GameMEXmlParser {
                 server.addr = readText(parser);
             } else if (key.equals("port")) {
                 server.port = readText(parser);
-            } else if (key.equals("name")) {
+            } else if (key.equals("game")) {
+                server.game = readText(parser);
+            }else if (key.equals("name")) {
                 server.name = readText(parser);
             } else if (key.equals("map")) {
                 server.map = readText(parser);

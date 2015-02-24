@@ -10,4 +10,5 @@ public class ServerPlayer {
     public int kills;
     public int deaths;
     public int skill;
+    public String avatar;
 }

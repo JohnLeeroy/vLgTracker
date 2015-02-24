@@ -1,6 +1,9 @@
 package vlg.jli.tracker.Server;
 
+import android.app.ActionBar;
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -12,6 +15,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,7 +25,9 @@ import vlg.jli.tracker.GameME.GameMEAPI;
 import vlg.jli.tracker.GameME.GameMECache;
 import vlg.jli.tracker.Model.Server;
 import vlg.jli.tracker.Model.ServerList;
+import vlg.jli.tracker.Model.User;
 import vlg.jli.tracker.R;
+import vlg.jli.tracker.UserCardActivity;
 
 /**
  * Created by johnli on 12/20/14.
@@ -64,36 +71,36 @@ public class ServerListFragment extends Fragment
         }catch (Exception e){
             e.getMessage();
         }
+
     }
 
     void getServers()
     {
         //REFACTOR
         GameMEAPI api = new GameMEAPI(getActivity());
-        api.getServers(getServerListener);
+        api.getGlobalServerList(getServerListener);
     }
 
     AsyncListener getServerListener = new AsyncListener(){
         @Override
         public void onResult(Object response, boolean isSuccess){
             servers = (List<Server>)response;
+            List<Server> toRemove = new ArrayList<Server>();
+
+            Server currentServer;
+            for(int i = 0; i < servers.size(); i++)
+            {
+                currentServer = servers.get(i);
+                if(!currentServer.game.equalsIgnoreCase("csgo"))
+                {
+                    toRemove.add(currentServer);
+                }
+            }
+            servers.removeAll(toRemove);
+
             adapter.clear();
             adapter.addAll(servers);
             adapter.notifyDataSetChanged();
-
-
-            /*
-            GameMEAPI api = new GameMEAPI();
-            for(int i = 0; i < servers.size(); i++)
-            {
-                api.getServerPlayerList(servers.get(i).getFullAddress(), new AsyncListener() {
-                    @Override
-                    public void onResult(Object response, boolean isSuccess) {
-
-                    }
-                });
-            }
-            */
         }
     };
 
@@ -128,11 +135,24 @@ public class ServerListFragment extends Fragment
                 @Override
                 public void onClick(View view) {
                     Log.d("VLG", "?" + server.toString());
-                    serverRowSelectedListener.onServerChanged(server);
+                   // serverRowSelectedListener.onServerChanged(server);
+                    Intent intent = new Intent(getActivity().getApplicationContext(), ServerInfoActivity.class);
+                    Gson gson = new Gson();
+                    intent.putExtra("server",  gson.toJson(server));
+                    startActivity(intent);
+
+                    getActivity().overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
                 }
             });
             // Return the completed view to render on screen
             return convertView;
         }
+    }
+
+    public void updateData(List<Server> data)
+    {
+        adapter.clear();
+        adapter.addAll(data);
+        adapter.notifyDataSetChanged();
     }
 }

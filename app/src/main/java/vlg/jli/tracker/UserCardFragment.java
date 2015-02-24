@@ -1,4 +1,4 @@
-package vlg.jli.tracker.Profile;
+package vlg.jli.tracker;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -18,42 +18,37 @@ import com.koushikdutta.ion.Ion;
 import java.util.ArrayList;
 import java.util.List;
 
-import vlg.jli.tracker.AsyncListener;
-import vlg.jli.tracker.GameME.GameMEAPI;
 import vlg.jli.tracker.GameME.GameMECache;
 import vlg.jli.tracker.Model.User;
-import vlg.jli.tracker.R;
+import vlg.jli.tracker.View.UserCardStatBarView;
 
 /**
- * Created by johnli on 12/1/14.
+ * Created by johnli on 2/21/15.
  */
-public class UserViewFragment extends Fragment {
-    ListView activityListView;
-    UserProfileAdapter adapter;
-    User currentUser;
-    ImageView profilePicture;
+public class UserCardFragment extends Fragment {
 
-    Button setMainUserButton;
+    ImageView userProfilePicture;
+    TextView username;
+
+    UserCardStatBarView statBar;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.view_profile_user, container, false);
-        activityListView = (ListView)rootView.findViewById(R.id.user_profile_list_view);
-        setMainUserButton = (Button)rootView.findViewById(R.id.user_set_main_user_button);
+        View rootView = inflater.inflate(R.layout.view_user_card, container, false);
+        userProfilePicture = (ImageView) rootView.findViewById(R.id.card_user_picture);
+        username = (TextView) rootView.findViewById(R.id.card_user_name);
+        statBar = (UserCardStatBarView) rootView.findViewById(R.id.user_card_stat_bar);
+
+        /*
         setMainUserButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 onClickSetAsMainUser(view);
             }
         });
-
-
-        profilePicture = (ImageView) rootView.findViewById(R.id.user_picture);
-
-        adapter = new UserProfileAdapter(getActivity(), new ArrayList<String[]>());
-        activityListView.setAdapter(adapter);
-
+        */
         init();
         return  rootView;
     }
@@ -105,7 +100,7 @@ public class UserViewFragment extends Fragment {
     public void onClickSetAsMainUser(View v)
     {
         try {
-            GameMECache.getInstance(getActivity()).saveUserPrefs(currentUser);
+           // GameMECache.getInstance(getActivity()).saveUserPrefs(currentUser);
         }
         catch (Exception e)
         {
@@ -115,16 +110,15 @@ public class UserViewFragment extends Fragment {
 
     public void setUser(User user)
     {
-        if(user == null)
+        if(user == null) {
+            Log.w("Tracker", "UserViewFragment: Setting user to null");
             return;
+        }
 
-        currentUser = user;
-        List<String[]> data = user.convertToList();
-        adapter.clear();
-        adapter.addAll(data);
-        adapter.notifyDataSetChanged();
-
-        Ion.with(getActivity()).load(currentUser.avatar).withBitmap().intoImageView(profilePicture);
-        setMainUserButton.setVisibility(View.VISIBLE);
+        Ion.with(getActivity()).load(user.avatar).withBitmap().intoImageView(userProfilePicture);
+        username.setText(user.name);
+        statBar.tvKills.setText(String.valueOf(user.kills));
+        statBar.tvRank.setText(String.valueOf(user.rank));
+        statBar.tvSkill.setText(String.valueOf(user.skill));
     }
 }

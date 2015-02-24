@@ -93,7 +93,7 @@ public class UserSearchActivity extends FragmentActivity {
     AdapterView.OnItemClickListener onUserRowClickedListener = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-            Intent intent = new Intent(getApplicationContext(), UserActivity.class);
+            Intent intent = new Intent(getApplicationContext(), UserCardActivity.class);
             User user = (User)adapterView.getItemAtPosition(i);
             intent.putExtra("user",  user);
             startActivity(intent);
@@ -120,12 +120,6 @@ public class UserSearchActivity extends FragmentActivity {
             @Override
             public boolean onMenuItemActionCollapse(MenuItem menuItem) {
                 Log.d("tag", "Collapsing");
-                /*
-                getActionBar().setDisplayHomeAsUpEnabled(true);
-                onFeedUpdated();
-                feedListView.setAdapter(feedListAdapter);
-                feedListView.setOnItemClickListener(onFeedRowClick);
-                */
                 return true;
             }
         });

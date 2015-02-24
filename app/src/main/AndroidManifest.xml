@@ -7,10 +7,23 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
+        <activity android:name=".MainActivity" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
-        <activity android:name=".MainActivity"/>
-        <activity android:name=".UserActivity"/>
-        <activity android:name=".UserSearchActivity"/>
+                <category android:name="android.intent.category.LAUNCHER" />
+
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".UserActivity" />
+        <activity android:name=".UserSearchActivity" />
+        <activity android:name=".UserCardActivity" />
+        <activity
+            android:name=".Server.ServerInfoActivity"
+            android:label="@string/title_activity_server_info"
+            >
+        </activity>
     </application>
 
     <uses-permission android:name="android.permission.INTERNET" />

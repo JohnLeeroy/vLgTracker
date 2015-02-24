@@ -42,7 +42,7 @@ public class GameMECache {
     public void savePlayerList(String address, List<ServerPlayer> playerList) {
         if (playerList == null || servers == null || playerList.size() == 0)
             return;
-
+        /*
         for (int i = 0; i < servers.size(); i++) {
             Server server = servers.get(i);
             if (address.equals(server.getFullAddress())) {
@@ -51,6 +51,7 @@ public class GameMECache {
                 return;
             }
         }
+        */
     }
 
     public void loadUserPrefs()

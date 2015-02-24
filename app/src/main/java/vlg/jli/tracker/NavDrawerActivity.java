@@ -2,6 +2,8 @@ package vlg.jli.tracker;
 
 import android.app.ActionBar;
 
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -9,6 +11,7 @@ import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.SearchView;
 
 import vlg.jli.tracker.Profile.ProfileFragment;
 import vlg.jli.tracker.Server.ServerPagerFragment;
@@ -29,6 +32,12 @@ public class NavDrawerActivity extends FragmentActivity
      */
     protected CharSequence mTitle;
 
+
+    Menu mainMenu;
+    MenuItem searchItem;
+
+    SearchView searchView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,45 +56,6 @@ public class NavDrawerActivity extends FragmentActivity
     @Override
     public void onNavigationDrawerItemSelected(int position) {
 
-        if(position == 0)
-        {
-            ProfileFragment fragment = new ProfileFragment();
-
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            fragmentManager.beginTransaction()
-                    .replace(R.id.container, fragment)
-                    .commit();
-        }
-        else if(position == 1)
-        {
-            ServerPagerFragment fragment = new ServerPagerFragment();
-
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            fragmentManager.beginTransaction()
-                    .replace(R.id.container, fragment)
-                    .commit();
-        }
-        else if(position == 2) {
-            /*UserListFragment fragment= new UserListFragment();
-
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            fragmentManager.beginTransaction()
-                    .replace(R.id.container, fragment)
-                    .commit();
-                    */
-            Intent intent = new Intent(this, UserSearchActivity.class);
-            startActivity(intent);
-
-            overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
-        }
-        else if(position == 3)
-        {
-            AboutFragment fragment = new AboutFragment();
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            fragmentManager.beginTransaction()
-                    .replace(R.id.container, fragment)
-                    .commit();
-        }
     }
 
     public void onSectionAttached(int number) {
@@ -119,8 +89,17 @@ public class NavDrawerActivity extends FragmentActivity
             // Only show items in the action bar relevant to this screen
             // if the drawer is not showing. Otherwise, let the drawer
             // decide what to show in the action bar.
-            getMenuInflater().inflate(R.menu.drawer, menu);
+            getMenuInflater().inflate(R.menu.global, menu);
             restoreActionBar();
+
+            searchItem = menu.findItem(R.id.search);
+
+            SearchManager searchManager =
+                    (SearchManager) this.getSystemService(Context.SEARCH_SERVICE);
+            searchView = (SearchView) menu.findItem(R.id.search).getActionView();
+            searchView.setSearchableInfo(searchManager.getSearchableInfo(this.getComponentName()));
+
+
             return true;
         }
         return super.onCreateOptionsMenu(menu);
