@@ -14,16 +14,14 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-import vlg.jli.tracker.AsyncListener;
-import vlg.jli.tracker.GameME.GameMEAPI;
-import vlg.jli.tracker.Model.VLGActivity;
-import vlg.jli.tracker.Model.VLGActivityList;
+import vlg.jli.tracker.Model.Server;
+import vlg.jli.tracker.Model.ServerList;
 import vlg.jli.tracker.R;
 
 /**
  * Created by johnli on 12/1/14.
  */
-public class ActivityTabFragment extends Fragment {
+public class WatchlistTabFragment extends Fragment {
     ListView activityListView;
 //profile_activity_list_view
 
@@ -31,42 +29,42 @@ public class ActivityTabFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.view_profile_activity, container, false);
-        activityListView = (ListView)rootView.findViewById(R.id.profile_activity_list_view);
-        init();
+        View rootView = inflater.inflate(R.layout.view_profile_watchlist, container, false);
         return  rootView;
     }
 
+
     void init()
     {
-        VLGActivityList VLGActivityList = new VLGActivityList();
-        ActivityListAdapter adapter = new ActivityListAdapter(getActivity(), VLGActivityList.data);
+        ServerList serverList = new ServerList();
+        ServerAdapter adapter = new ServerAdapter(getActivity(), serverList.servers);
         activityListView.setAdapter(adapter);
     }
 
-    public class ActivityListAdapter extends ArrayAdapter<VLGActivity> {
-        public ActivityListAdapter(Context context, ArrayList<VLGActivity> activities) {
-            super(context, 0, activities);
+    public class ServerAdapter extends ArrayAdapter<Server> {
+        public ServerAdapter(Context context, ArrayList<Server> servers) {
+            super(context, 0, servers);
         }
 
-        public ActivityListAdapter(Context context, List<VLGActivity> activities) {
-            super(context, 0, activities);
+        public ServerAdapter(Context context, List<Server> servers) {
+            super(context, 0, servers);
         }
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             // Get the data item for this position
-            VLGActivity VLGActivity = getItem(position);
+            Server server = getItem(position);
             // Check if an existing view is being reused, otherwise inflate the view
             if (convertView == null) {
-                convertView = LayoutInflater.from(getContext()).inflate(R.layout.view_row_activity, parent, false);
+                convertView = LayoutInflater.from(getContext()).inflate(R.layout.view_row_server, parent, false);
             }
             // Lookup view for data population
-            TextView header = (TextView) convertView.findViewById(R.id.activity_title);
-            TextView body = (TextView) convertView.findViewById(R.id.activity_body);
+            TextView tvName = (TextView) convertView.findViewById(R.id.server_title);
+            TextView map = (TextView) convertView.findViewById(R.id.map);
+            map.setText(server.map);
 
-            header.setText(VLGActivity.header);
-            body.setText(VLGActivity.body);
+            // Populate the data into the template view using the data object
+            tvName.setText(server.name);
 
             convertView.setOnClickListener(new View.OnClickListener() {
                 @Override

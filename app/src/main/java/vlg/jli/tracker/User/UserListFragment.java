@@ -1,24 +1,26 @@
-package vlg.jli.tracker;
+package vlg.jli.tracker.User;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.koushikdutta.ion.Ion;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import vlg.jli.tracker.GameME.GameMEAPI;
 import vlg.jli.tracker.Model.User;
+import vlg.jli.tracker.R;
 
 /**
  * Created by johnli on 12/27/14.
@@ -52,6 +54,14 @@ public class UserListFragment extends Fragment
             }
         });
         */
+
+        userListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+            }
+        });
         return rootView;
     }
 
@@ -67,7 +77,7 @@ public class UserListFragment extends Fragment
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             // Get the data item for this position
-            User user = getItem(position);
+            final User user = getItem(position);
             // Check if an existing view is being reused, otherwise inflate the view
             if (convertView == null) {
                 convertView = LayoutInflater.from(getContext()).inflate(R.layout.view_row_user, parent, false);
@@ -87,14 +97,19 @@ public class UserListFragment extends Fragment
             // Populate the data into the template view using the data object
             tvName.setText(user.name);
 
-           /* convertView.setOnClickListener(new View.OnClickListener() {
+            convertView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Log.d("VLG", "?");
+                    //Intent intent = new Intent(getActivity().getApplicationContext(), UserActivity.class);
+                    Intent intent = new Intent(getActivity().getApplicationContext(), UserCardActivity.class);
+                    Gson gson = new Gson();
+                    intent.putExtra("watch_bar",  gson.toJson(user));
+                    startActivity(intent);
 
+                    getActivity().overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
                 }
             });
-            */
+
             // Return the completed view to render on screen
             return convertView;
         }

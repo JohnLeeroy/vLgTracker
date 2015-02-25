@@ -35,6 +35,8 @@ public class UserViewFragment extends Fragment {
 
     Button setMainUserButton;
 
+    GameMECache cache;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -44,23 +46,23 @@ public class UserViewFragment extends Fragment {
         setMainUserButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onClickSetAsMainUser(view);
+              //  onClickSetAsMainUser(view);
             }
         });
-
 
         profilePicture = (ImageView) rootView.findViewById(R.id.user_picture);
 
         adapter = new UserProfileAdapter(getActivity(), new ArrayList<String[]>());
         activityListView.setAdapter(adapter);
 
+        cache = GameMECache.getInstance(getActivity());
         init();
         return  rootView;
     }
 
     void init()
     {
-        User me = GameMECache.getInstance(getActivity()).mainUser;
+        User me = cache.mainUser;
         if(me == null) {
             me = User.getRed();
         }
@@ -102,17 +104,6 @@ public class UserViewFragment extends Fragment {
         }
     }
 
-    public void onClickSetAsMainUser(View v)
-    {
-        try {
-            GameMECache.getInstance(getActivity()).saveUserPrefs(currentUser);
-        }
-        catch (Exception e)
-        {
-
-        }
-    }
-
     public void setUser(User user)
     {
         if(user == null)
@@ -125,6 +116,6 @@ public class UserViewFragment extends Fragment {
         adapter.notifyDataSetChanged();
 
         Ion.with(getActivity()).load(currentUser.avatar).withBitmap().intoImageView(profilePicture);
-        setMainUserButton.setVisibility(View.VISIBLE);
+        //setMainUserButton.setVisibility(View.VISIBLE);
     }
 }

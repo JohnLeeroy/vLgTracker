@@ -1,7 +1,5 @@
 package vlg.jli.tracker.Server;
 
-import android.app.ActionBar;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -25,9 +23,7 @@ import vlg.jli.tracker.GameME.GameMEAPI;
 import vlg.jli.tracker.GameME.GameMECache;
 import vlg.jli.tracker.Model.Server;
 import vlg.jli.tracker.Model.ServerList;
-import vlg.jli.tracker.Model.User;
 import vlg.jli.tracker.R;
-import vlg.jli.tracker.UserCardActivity;
 
 /**
  * Created by johnli on 12/20/14.

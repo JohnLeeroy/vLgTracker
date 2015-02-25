@@ -374,7 +374,7 @@ public class GameMEXmlParser {
                 //skip(parser);
 
                 //parser.getText();
-                //user.imageUrl = readText(parser);
+                //watch_bar.imageUrl = readText(parser);
             } else if (key.equals("activity")) {
                 user.activity = readText(parser);
             } else if (key.equals("clanname")) {

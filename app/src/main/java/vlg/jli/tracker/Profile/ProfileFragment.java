@@ -10,13 +10,10 @@ import android.view.ViewGroup;
 import android.widget.TabHost;
 
 import vlg.jli.tracker.R;
+import vlg.jli.tracker.User.UserCardFragment;
 
 public class ProfileFragment extends Fragment {
     TabHost tabHost;
-
-    void ProfileFragment() {
-
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -25,22 +22,23 @@ public class ProfileFragment extends Fragment {
 
         tabHost = (TabHost)rootView.findViewById(R.id.tabHost_profile);
         tabHost.setup();
-        TabHost.TabSpec ts = tabHost.newTabSpec("ActivityTab");
+        TabHost.TabSpec ts = tabHost.newTabSpec("StatsTab");
+        ts.setContent(R.id.StatsTab);
+        ts.setIndicator("Stats");
+        tabHost.addTab(ts);
+
+        ts = tabHost.newTabSpec("ActivityTab");
         ts.setContent(R.id.ActivityTab);
         ts.setIndicator("Activity");
         tabHost.addTab(ts);
 
-        ts = tabHost.newTabSpec("StatsTab");
-        ts.setContent(R.id.StatsTab);
-        ts.setIndicator("Stats");
-        tabHost.addTab(ts);
-        ts= tabHost.newTabSpec("AwardsTab");
-        ts.setContent(R.id.AwardsTab);
-        ts.setIndicator("Awards");
+        ts= tabHost.newTabSpec("WatchlistTab");
+        ts.setContent(R.id.WatchlistTab);
+        ts.setIndicator("Watchlist");
         tabHost.addTab(ts);
 
         tabHost.setOnTabChangedListener(onTabChangeListener);
-        switchToActivity();
+        switchToStats();
         return rootView;
     }
 
@@ -51,15 +49,15 @@ public class ProfileFragment extends Fragment {
                 switchToActivity();
             }else if(s == "StatsTab") {
                 switchToStats();
-            }else if(s == "AwardsTab") {
-                switchToAwards();
+            }else if(s == "WatchlistTab") {
+                switchToWatchlist();
             }
         }
     };
 
     void switchToActivity()
     {
-        ActivityTabFragment fragment = new ActivityTabFragment();
+        UsersTabFragment fragment = new UsersTabFragment();
 
         FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.beginTransaction()
@@ -68,17 +66,18 @@ public class ProfileFragment extends Fragment {
     }
     void switchToStats()
     {
-        UserViewFragment fragment = new UserViewFragment();
+        UserCardFragment fragment = new UserCardFragment();
 
         FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.beginTransaction()
                 .replace(R.id.tab_content, fragment)
                 .commit();
+
     }
 
-    void switchToAwards()
+    void switchToWatchlist()
     {
-        AwardsTabFragment fragment = new AwardsTabFragment();
+        WatchlistTabFragment fragment = new WatchlistTabFragment();
 
         FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.beginTransaction()
@@ -88,7 +87,5 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        /*((MainActivity) activity).onSectionAttached(
-                getArguments().getInt(ARG_SECTION_NUMBER));*/
     }
 }

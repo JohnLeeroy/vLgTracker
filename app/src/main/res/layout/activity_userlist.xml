@@ -5,6 +5,7 @@
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".UserListFragment">
 
     <!-- As the main content view, the view below consumes the entire
@@ -12,10 +13,9 @@
     <FrameLayout
         android:id="@+id/user_list_content"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-
+        android:layout_height="wrap_content">
     </FrameLayout>
+
 
     <!-- android:layout_gravity="start" tells DrawerLayout to treat
          this as a sliding drawer on the left side for left-to-right

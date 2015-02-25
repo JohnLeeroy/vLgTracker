@@ -1,4 +1,4 @@
-package vlg.jli.tracker;
+package vlg.jli.tracker.User;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -20,6 +20,7 @@ import java.util.List;
 
 import vlg.jli.tracker.GameME.GameMECache;
 import vlg.jli.tracker.Model.User;
+import vlg.jli.tracker.R;
 import vlg.jli.tracker.View.UserCardStatBarView;
 
 /**
@@ -31,8 +32,10 @@ public class UserCardFragment extends Fragment {
     TextView username;
 
     UserCardStatBarView statBar;
+    Button btnSetMainUser;
+    GameMECache cache;
 
-
+    public Button.OnClickListener setMainUserListener;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -40,22 +43,20 @@ public class UserCardFragment extends Fragment {
         userProfilePicture = (ImageView) rootView.findViewById(R.id.card_user_picture);
         username = (TextView) rootView.findViewById(R.id.card_user_name);
         statBar = (UserCardStatBarView) rootView.findViewById(R.id.user_card_stat_bar);
+        btnSetMainUser = (Button) rootView.findViewById(R.id.user_set_main_user_button);
 
-        /*
-        setMainUserButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onClickSetAsMainUser(view);
-            }
-        });
-        */
+        if(setMainUserListener != null) {
+            btnSetMainUser.setVisibility(View.VISIBLE);
+            btnSetMainUser.setOnClickListener(setMainUserListener);
+        }
+        cache = GameMECache.getInstance(getActivity());
         init();
         return  rootView;
     }
 
     void init()
     {
-        User me = GameMECache.getInstance(getActivity()).mainUser;
+        User me = cache.mainUser;
         if(me == null) {
             me = User.getRed();
         }
@@ -97,21 +98,10 @@ public class UserCardFragment extends Fragment {
         }
     }
 
-    public void onClickSetAsMainUser(View v)
-    {
-        try {
-           // GameMECache.getInstance(getActivity()).saveUserPrefs(currentUser);
-        }
-        catch (Exception e)
-        {
-
-        }
-    }
-
     public void setUser(User user)
     {
         if(user == null) {
-            Log.w("Tracker", "UserViewFragment: Setting user to null");
+            Log.w("Tracker", "UserViewFragment: Setting watch_bar to null");
             return;
         }
 

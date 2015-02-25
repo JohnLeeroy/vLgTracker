@@ -26,7 +26,6 @@ import vlg.jli.tracker.AsyncListener;
 import vlg.jli.tracker.GameME.GameMEAPI;
 import vlg.jli.tracker.Model.Server;
 import vlg.jli.tracker.Model.ServerPlayer;
-import vlg.jli.tracker.Model.User;
 import vlg.jli.tracker.R;
 import vlg.jli.tracker.View.ServerInfoRowView;
 
@@ -63,7 +62,7 @@ public class ServerInfoActivity extends Activity implements Observer {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.server_info, menu);
+        getMenuInflater().inflate(R.menu.watch_bar, menu);
         return true;
     }
 
@@ -77,9 +76,18 @@ public class ServerInfoActivity extends Activity implements Observer {
                 finish();
                 overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
                 return true;
+            case R.id.action_watch:
+                Log.d("GMTracker", "WATCH!");
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    public void onBackPressed(){
+        // do something here and don't write super.onBackPressed()
+        finish();
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
     }
 
     private void handleIntent(Intent intent) {
@@ -110,6 +118,8 @@ public class ServerInfoActivity extends Activity implements Observer {
         currentServer = server;
         currentServer.addObserver(this);
         updateViewWithServer(currentServer);
+
+        setTitle(server.name);
 
         GameMEAPI api = new GameMEAPI(this);
         api.getServerPlayerList(currentServer.getFullAddress(), new AsyncListener() {

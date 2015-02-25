@@ -16,18 +16,18 @@ public class SettingsProvider {
         this.c = c;
     }
 
-    public void setUserPref(String jsonData) {
+    public void setPref(String jsonData) {
         PreferenceManager.getDefaultSharedPreferences(c).edit()
-                .putString("user_pref", jsonData).commit();
+                .putString("saved_pref", jsonData).commit();
     }
 
-    public String getUserPref() {
+    public String getPref() {
         return PreferenceManager.getDefaultSharedPreferences(c).getString(
-                "user_pref", "");
+                "saved_pref", "");
     }
 
     public void resetUserPrefs()
     {
-        PreferenceManager.getDefaultSharedPreferences(c).edit().putString("feed_pref", "").commit();
+        PreferenceManager.getDefaultSharedPreferences(c).edit().putString("saved_pref", "").commit();
     }
 }

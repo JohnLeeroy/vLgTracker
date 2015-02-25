@@ -1,4 +1,4 @@
-package vlg.jli.tracker;
+package vlg.jli.tracker.User;
 
 import android.app.ActionBar;
 import android.content.Intent;
@@ -6,13 +6,17 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.google.gson.Gson;
+
+import vlg.jli.tracker.AsyncListener;
 import vlg.jli.tracker.GameME.GameMEAPI;
-import vlg.jli.tracker.GameME.GameMECache;
 import vlg.jli.tracker.Model.User;
 import vlg.jli.tracker.Profile.UserViewFragment;
+import vlg.jli.tracker.R;
 
 /**
  * Created by johnli on 12/27/14.
@@ -63,14 +67,26 @@ public class UserActivity extends FragmentActivity {
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            User user = extras.getParcelable("user");
+
+            Gson gson = new Gson();
+            String serializedUser = getIntent().getStringExtra("watch_bar");
+            User user =  gson.fromJson(serializedUser, User.class);
             updateUser(user);
+            Log.d("GMTracker", serializedUser);
             return;
         }
     }
 
+    public void onBackPressed(){
+        // do something here and don't write super.onBackPressed()
+        finish();
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
+    }
+
     void updateUser(final User user)
     {
+        setTitle(user.name);
+
         final GameMEAPI api = new GameMEAPI(this);
         runOnUiThread(new Runnable() {
             @Override

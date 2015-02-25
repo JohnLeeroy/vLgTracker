@@ -28,20 +28,19 @@
                 android:layout_height="fill_parent">
 
                 <LinearLayout
-                    android:id="@+id/ActivityTab"
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
-                    android:orientation="vertical"
-                    />
-
-                <LinearLayout
                     android:id="@+id/StatsTab"
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
                     android:orientation="vertical"/>
 
                 <LinearLayout
-                    android:id="@+id/AwardsTab"
+                    android:id="@+id/ActivityTab"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:orientation="vertical"
+                    />
+                <LinearLayout
+                    android:id="@+id/WatchlistTab"
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
                     android:orientation="vertical"/>

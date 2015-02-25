@@ -19,8 +19,10 @@ import vlg.jli.tracker.R;
 
 /**
  * Created by johnli on 11/28/14.
+ * UNUSED
  */
 
+/*
 public class ServerPagerFragment extends Fragment {
     View rootView;
 
@@ -95,7 +97,7 @@ public class ServerPagerFragment extends Fragment {
         serverListFragment.updateData(data);
     }
 }
-
+*/
 
 
 
