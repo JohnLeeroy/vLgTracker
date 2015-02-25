@@ -78,7 +78,7 @@ public class NavDrawerActivity extends FragmentActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        if (!mNavigationDrawerFragment.isDrawerOpen()) {
+        //if (!mNavigationDrawerFragment.isDrawerOpen()) {
             // Only show items in the action bar relevant to this screen
             // if the drawer is not showing. Otherwise, let the drawer
             // decide what to show in the action bar.
@@ -93,8 +93,8 @@ public class NavDrawerActivity extends FragmentActivity
             searchView.setSearchableInfo(searchManager.getSearchableInfo(this.getComponentName()));
 
 
-            return true;
-        }
+       //     return true;
+       // }
         return super.onCreateOptionsMenu(menu);
     }
 
