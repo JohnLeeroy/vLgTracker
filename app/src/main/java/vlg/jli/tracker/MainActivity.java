@@ -1,10 +1,12 @@
 package vlg.jli.tracker;
 
+import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.SearchView;
 
 import java.util.List;
@@ -13,7 +15,8 @@ import vlg.jli.tracker.GameME.GameMEAPI;
 import vlg.jli.tracker.Model.Server;
 import vlg.jli.tracker.Model.User;
 import vlg.jli.tracker.Profile.ProfileFragment;
-import vlg.jli.tracker.Server.ServerPagerFragment;
+import vlg.jli.tracker.Server.ServerListFragment;
+import vlg.jli.tracker.User.UserListFragment;
 
 
 public class MainActivity extends NavDrawerActivity {
@@ -34,9 +37,10 @@ public class MainActivity extends NavDrawerActivity {
     GameMEAPI api;
 
     ProfileFragment profileFragment;
-    ServerPagerFragment serverFragment;
+    ServerListFragment serverListFragment;
     UserListFragment userListFragment;
     AboutFragment aboutFragment;
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
@@ -46,49 +50,6 @@ public class MainActivity extends NavDrawerActivity {
 
         api = new GameMEAPI(this);
         return true;
-    }
-
-    @Override
-    public void onNavigationDrawerItemSelected(int position) {
-        super.onNavigationDrawerItemSelected(position);
-        if(position == 0)
-        {
-            profileFragment = new ProfileFragment();
-
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            fragmentManager.beginTransaction()
-                    .replace(R.id.container, profileFragment)
-                    .commit();
-        }
-        else if(position == 1)
-        {
-            serverFragment = new ServerPagerFragment();
-
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            fragmentManager.beginTransaction()
-                    .replace(R.id.container, serverFragment)
-                    .commit();
-
-            searchDelegate = serverSearchDelegate;
-        }
-        else if(position == 2) {
-            userListFragment = new UserListFragment();
-
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            fragmentManager.beginTransaction()
-                    .replace(R.id.container, userListFragment)
-                    .commit();
-            searchDelegate = userSearchDelegate;
-            //overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
-        }
-        else if(position == 3)
-        {
-            aboutFragment = new AboutFragment();
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            fragmentManager.beginTransaction()
-                    .replace(R.id.container, aboutFragment)
-                    .commit();
-        }
     }
 
     void initSearchDelegates()
@@ -116,7 +77,7 @@ public class MainActivity extends NavDrawerActivity {
             public void onResult(Object response, boolean isSuccess) {
                 List<Server> searchResults = (List<Server>) response;
                 Log.d("gmtracker", "Count: " + searchResults.size());
-                serverFragment.updateData(searchResults);
+                serverListFragment.updateData(searchResults);
             }
         };
     }
@@ -156,7 +117,7 @@ public class MainActivity extends NavDrawerActivity {
             }
         });
 
-        searchCooldown = new CountDownTimer(400, 100) {
+        searchCooldown = new CountDownTimer(800, 100) {
             @Override
             public void onTick(long l) { }
 
@@ -165,6 +126,56 @@ public class MainActivity extends NavDrawerActivity {
                 startSearch(query);
             }
         };
+    }
+
+    @Override
+    public void onNavigationDrawerItemSelected(int position) {
+        super.onNavigationDrawerItemSelected(position);
+        if(position == 0)
+        {
+            profileFragment = new ProfileFragment();
+
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.container, profileFragment)
+                    .commit();
+
+            getActionBar().setTitle("Profile");
+        }
+        else if(position == 1)
+        {
+            serverListFragment = new ServerListFragment();
+
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.container, serverListFragment)
+                    .commit();
+            getActionBar().setTitle("Search Server");
+
+            searchDelegate = serverSearchDelegate;
+        }
+        else if(position == 2) {
+            userListFragment = new UserListFragment();
+
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.container, userListFragment)
+                    .commit();
+            searchDelegate = userSearchDelegate;
+
+            getActionBar().setTitle("Search User");
+            //mNavigationDrawerFragment.title = "SearchUser";
+            //overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
+        }
+        else if(position == 3)
+        {
+            getActionBar().setTitle("About");
+            aboutFragment = new AboutFragment();
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.container, aboutFragment)
+                    .commit();
+        }
     }
 
     /**
@@ -178,5 +189,13 @@ public class MainActivity extends NavDrawerActivity {
         Log.d("gmtracker", "Searching for ... " + query);
         isSearching = true;
         searchDelegate.search(query);
+    }
+
+    @Override
+    protected  void onResume()
+    {
+        super.onResume();
+        if(searchItem != null)
+            searchItem.collapseActionView();
     }
 }

@@ -16,9 +16,9 @@
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
         </activity>
-        <activity android:name=".UserActivity" />
-        <activity android:name=".UserSearchActivity" />
-        <activity android:name=".UserCardActivity" />
+        <activity android:name=".User.UserActivity" />
+        <activity android:name=".User.UserSearchActivity" />
+        <activity android:name=".User.UserCardActivity" />
         <activity
             android:name=".Server.ServerInfoActivity"
             android:label="@string/title_activity_server_info"

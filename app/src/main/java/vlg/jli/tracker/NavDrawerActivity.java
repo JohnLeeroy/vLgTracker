@@ -4,17 +4,12 @@ import android.app.ActionBar;
 
 import android.app.SearchManager;
 import android.content.Context;
-import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.SearchView;
-
-import vlg.jli.tracker.Profile.ProfileFragment;
-import vlg.jli.tracker.Server.ServerPagerFragment;
 
 /**
  * Created by johnli on 12/1/14.
@@ -31,7 +26,6 @@ public class NavDrawerActivity extends FragmentActivity
      * Used to store the last screen title. For use in {@link #restoreActionBar()}.
      */
     protected CharSequence mTitle;
-
 
     Menu mainMenu;
     MenuItem searchItem;
@@ -79,7 +73,6 @@ public class NavDrawerActivity extends FragmentActivity
         ActionBar actionBar = getActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
         actionBar.setDisplayShowTitleEnabled(true);
-        actionBar.setTitle(mTitle);
     }
 
 

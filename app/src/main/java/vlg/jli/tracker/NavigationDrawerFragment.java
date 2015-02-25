@@ -20,7 +20,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 /**
  * Fragment used for managing interactions for and presentation of a navigation drawer.
@@ -50,7 +49,7 @@ public class NavigationDrawerFragment extends Fragment {
      */
     private ActionBarDrawerToggle mDrawerToggle;
 
-    private DrawerLayout mDrawerLayout;
+    protected DrawerLayout mDrawerLayout;
     private ListView mDrawerListView;
     private View mFragmentContainerView;
 
@@ -135,6 +134,7 @@ public class NavigationDrawerFragment extends Fragment {
 
         // ActionBarDrawerToggle ties together the the proper interactions
         // between the navigation drawer and the action bar app icon.
+        final NavigationDrawerFragment self = this;
         mDrawerToggle = new ActionBarDrawerToggle(
                 getActivity(),                    /* host Activity */
                 mDrawerLayout,                    /* DrawerLayout object */
@@ -145,6 +145,7 @@ public class NavigationDrawerFragment extends Fragment {
             @Override
             public void onDrawerClosed(View drawerView) {
                 super.onDrawerClosed(drawerView);
+
                 if (!isAdded()) {
                     return;
                 }
@@ -265,7 +266,7 @@ public class NavigationDrawerFragment extends Fragment {
         ActionBar actionBar = getActionBar();
         actionBar.setDisplayShowTitleEnabled(true);
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
-        actionBar.setTitle(R.string.app_name);
+        //actionBar.setTitle(R.string.app_name);
     }
 
     private ActionBar getActionBar() {
@@ -281,4 +282,6 @@ public class NavigationDrawerFragment extends Fragment {
          */
         void onNavigationDrawerItemSelected(int position);
     }
+
+
 }
