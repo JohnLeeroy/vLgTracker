@@ -1,7 +1,10 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources>
     <color name="semi_black">#cc282828</color>
-    <color name="white">#efeee8</color>
+    <color name="white">#FFFFFF</color>
+    <color name="semi_white">#efeee8</color>
     <color name="dark_gray">#94907e</color>
     <color name="charcoal">#272A2C</color>
+    <color name="theme">#82c100</color>
+    <color name="user_stat_bar">#363636</color>
 </resources>

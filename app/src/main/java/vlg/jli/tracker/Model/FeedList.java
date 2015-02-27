@@ -26,7 +26,5 @@ public class FeedList {
         data.add(new FeedItem("Bacon is Sizzling", "Hot off the block and ready to be bacon, it's Bacon!"));
         data.add(new FeedItem("Accuracy Up", "Your accuracy with the ak47 went up from 28% to 31%.  Amazing job!"));
         data.add(new FeedItem("Alex. Where is he now?", "Last seen 11/23/2014, please contact proper authorities(Sickminds) if found. He is stoned and dangerous." ));
-
-
     }
 }

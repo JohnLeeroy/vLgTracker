@@ -4,13 +4,13 @@
     android:id="@+id/users_view"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/ab_stacked_solid_app"
+    >
 
     <ListView
         android:id="@+id/users_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
-
     </ListView>
 </LinearLayout>

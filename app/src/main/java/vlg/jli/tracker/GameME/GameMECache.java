@@ -67,7 +67,7 @@ public class GameMECache {
             watchedUsers = new ArrayList<User>();
 
         Type serverType = new TypeToken<List<Server>>(){}.getType();
-        watchedServers = gson.fromJson(cache.get("watchedServers"), type);
+        watchedServers = gson.fromJson(cache.get("watchedServers"), serverType);
         if(watchedServers == null)
             watchedServers = new ArrayList<Server>();
 

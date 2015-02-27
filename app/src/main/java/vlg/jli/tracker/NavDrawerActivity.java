@@ -83,7 +83,7 @@ public class NavDrawerActivity extends FragmentActivity
             // if the drawer is not showing. Otherwise, let the drawer
             // decide what to show in the action bar.
             getMenuInflater().inflate(R.menu.global, menu);
-            restoreActionBar();
+            //restoreActionBar();
 
             searchItem = menu.findItem(R.id.search);
 

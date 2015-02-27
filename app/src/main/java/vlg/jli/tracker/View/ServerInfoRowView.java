@@ -3,7 +3,6 @@ package vlg.jli.tracker.View;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -47,5 +46,8 @@ public class ServerInfoRowView extends LinearLayout {
     {
         tvProperty = (TextView)findViewById(R.id.server_info_row_property);
         tvValue = (TextView)findViewById(R.id.server_info_row_value);
+
+        tvProperty.setTextColor(getResources().getColor(R.color.semi_white));
+        tvValue.setTextColor(getResources().getColor(R.color.semi_white));
     }
 }

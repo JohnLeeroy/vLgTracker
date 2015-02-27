@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -22,7 +21,6 @@ import vlg.jli.tracker.AsyncListener;
 import vlg.jli.tracker.GameME.GameMEAPI;
 import vlg.jli.tracker.Model.Server;
 import vlg.jli.tracker.Model.ServerPlayer;
-import vlg.jli.tracker.Model.User;
 import vlg.jli.tracker.R;
 import vlg.jli.tracker.View.ServerInfoRowView;
 
@@ -139,8 +137,11 @@ public class ServerInfoFragment extends Fragment implements Observer {
             ServerPlayer player = currentServer.playerList.get(position);
             TextView property = (TextView)convertView.findViewById(R.id.server_info_row_property);
             property.setText(player.name);
+            property.setTextColor(getResources().getColor(R.color.semi_white));
+
             TextView val = (TextView)convertView.findViewById(R.id.server_info_row_value);
             val.setText(player.kills + "/" + player.deaths);
+            val.setTextColor(getResources().getColor(R.color.semi_white));
             return convertView;
         }
     }

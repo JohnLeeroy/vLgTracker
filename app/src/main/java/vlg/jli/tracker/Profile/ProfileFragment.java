@@ -8,6 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TabHost;
+import android.widget.TabWidget;
+import android.widget.TextView;
 
 import vlg.jli.tracker.R;
 import vlg.jli.tracker.User.UserCardFragment;
@@ -27,6 +29,7 @@ public class ProfileFragment extends Fragment {
         ts.setIndicator("Stats");
         tabHost.addTab(ts);
 
+
         ts = tabHost.newTabSpec("ActivityTab");
         ts.setContent(R.id.ActivityTab);
         ts.setIndicator("Users");
@@ -39,6 +42,13 @@ public class ProfileFragment extends Fragment {
 
         tabHost.setOnTabChangedListener(onTabChangeListener);
         switchToStats();
+        setTabColor(tabHost);
+
+        tabHost.getTabWidget().setLeftStripDrawable(R.drawable.theme_green);
+        tabHost.getTabWidget().setDividerDrawable(R.drawable.theme_green);
+
+        updateTabSelector(tabHost.getTabWidget());
+
         return rootView;
     }
 
@@ -52,6 +62,8 @@ public class ProfileFragment extends Fragment {
             }else if(s == "WatchlistTab") {
                 switchToWatchlist();
             }
+
+            setTabColor(tabHost);
         }
     };
 
@@ -77,7 +89,7 @@ public class ProfileFragment extends Fragment {
 
     void switchToWatchlist()
     {
-        WatchlistTabFragment fragment = new WatchlistTabFragment();
+        ServersTabFragment fragment = new ServersTabFragment();
 
         FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.beginTransaction()
@@ -88,4 +100,31 @@ public class ProfileFragment extends Fragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
     }
+
+    private void setTabColor(TabHost tabHost) {
+        try {
+            for (int i=0; i < tabHost.getTabWidget().getChildCount();i++) {
+                TextView tv = (TextView) tabHost.getTabWidget().getChildAt(i).findViewById(android.R.id.title); //Unselected Tabs
+                if (tv != null) {
+                    tv.setTextColor(getResources().getColor(R.color.theme));
+                    tv.setTextSize(12);
+                }
+                TextView tv2 = (TextView) tabHost.getCurrentTabView().findViewById(android.R.id.title); // Selected Tab
+                if (tv2 != null) {
+                    tv2.setTextColor(getResources().getColor(R.color.theme));
+                    tv2.setTextSize(16);
+                }
+            }
+        } catch (ClassCastException e) {
+            // A precaution, in case Google changes from a TextView on the tabs.
+        }
+    }
+
+    private void updateTabSelector(TabWidget tabWidget) {
+        // Change background
+        for(int i=0; i < tabWidget.getChildCount(); i++)
+            tabWidget.getChildAt(i).setBackgroundResource(R.drawable.tab_indicator_ab_app);
+    }
+
+
 }

@@ -22,7 +22,6 @@ import vlg.jli.tracker.AsyncListener;
 import vlg.jli.tracker.GameME.GameMEAPI;
 import vlg.jli.tracker.GameME.GameMECache;
 import vlg.jli.tracker.Model.Server;
-import vlg.jli.tracker.Model.ServerList;
 import vlg.jli.tracker.R;
 
 /**
@@ -51,8 +50,8 @@ public class ServerListFragment extends Fragment
 
     void init()
     {
-        ServerList serverList = new ServerList();
-        adapter = new ServerAdapter(getActivity(), serverList.servers);
+        List<Server> servers = new ArrayList<Server>();
+        adapter = new ServerAdapter(getActivity(), servers);
         serverListView.setAdapter(adapter);
         List<Server> cachedServers = GameMECache.getInstance(getActivity()).servers;
         if(cachedServers != null) {

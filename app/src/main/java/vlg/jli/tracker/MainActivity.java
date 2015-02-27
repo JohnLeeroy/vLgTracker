@@ -164,8 +164,6 @@ public class MainActivity extends NavDrawerActivity {
             searchDelegate = userSearchDelegate;
 
             getActionBar().setTitle("Search User");
-            //mNavigationDrawerFragment.title = "SearchUser";
-            //overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
         }
         else if(position == 3)
         {
@@ -198,4 +196,13 @@ public class MainActivity extends NavDrawerActivity {
         if(searchItem != null)
             searchItem.collapseActionView();
     }
+
+    public void onBackPressed(){
+        // do something here and don't write super.onBackPressed()
+        if(mNavigationDrawerFragment.getSelectedPosition() == 0)
+            finish();
+        else
+            mNavigationDrawerFragment.selectItem(0);
+    }
+
 }

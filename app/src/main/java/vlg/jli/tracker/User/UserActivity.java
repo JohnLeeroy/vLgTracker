@@ -15,7 +15,7 @@ import com.google.gson.Gson;
 import vlg.jli.tracker.AsyncListener;
 import vlg.jli.tracker.GameME.GameMEAPI;
 import vlg.jli.tracker.Model.User;
-import vlg.jli.tracker.Profile.UserViewFragment;
+import vlg.jli.tracker.Profile.StatsTabFragment;
 import vlg.jli.tracker.R;
 
 /**
@@ -23,7 +23,7 @@ import vlg.jli.tracker.R;
  */
 public class UserActivity extends FragmentActivity {
 
-    UserViewFragment userFrag;
+    StatsTabFragment userFrag;
     User currentUser;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +32,7 @@ public class UserActivity extends FragmentActivity {
 
         View contentView = (View)findViewById(R.id.user_list_content);
 
-        userFrag = new UserViewFragment();
+        userFrag = new StatsTabFragment();
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
                 .replace(R.id.user_list_content, userFrag)
@@ -79,7 +79,7 @@ public class UserActivity extends FragmentActivity {
 
     public void onBackPressed(){
         // do something here and don't write super.onBackPressed()
-        finish();
+        super.onBackPressed();
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
     }
 

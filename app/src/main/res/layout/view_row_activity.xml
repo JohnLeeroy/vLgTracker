@@ -32,7 +32,7 @@
             android:ellipsize="marquee"
             android:singleLine="true"
             android:text="Description"
-            android:textColor="@color/white"
+            android:textColor="@color/semi_white"
             android:textSize="18sp" />
 
         <TextView

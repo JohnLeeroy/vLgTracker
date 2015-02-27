@@ -27,7 +27,7 @@ import vlg.jli.tracker.R;
 /**
  * Created by johnli on 12/1/14.
  */
-public class UserViewFragment extends Fragment {
+public class StatsTabFragment extends Fragment {
     ListView activityListView;
     UserProfileAdapter adapter;
     User currentUser;

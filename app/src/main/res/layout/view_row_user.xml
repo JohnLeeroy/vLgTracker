@@ -35,7 +35,7 @@
             android:ellipsize="marquee"
             android:singleLine="true"
             android:text="Description"
-            android:textColor="@color/white"
+            android:textColor="@color/semi_white"
             android:textSize="18sp" />
 
         <LinearLayout
@@ -51,7 +51,7 @@
                 android:layout_toRightOf="@id/icon"
                 android:gravity="center_vertical"
                 android:text="rank: 5"
-                android:textColor="@color/white"
+                android:textColor="@color/semi_white"
                 android:textSize="12sp"
                 android:paddingRight="10dp"/>
             <TextView
@@ -63,7 +63,7 @@
                 android:layout_toRightOf="@id/icon"
                 android:gravity="center_vertical"
                 android:text="Kills: 52"
-                android:textColor="@color/white"
+                android:textColor="@color/semi_white"
                 android:textSize="12sp"
                 android:paddingRight="10dp"/>
             <TextView
@@ -75,7 +75,7 @@
                 android:layout_toRightOf="@id/icon"
                 android:gravity="center_vertical"
                 android:text="HS: 52"
-                android:textColor="@color/white"
+                android:textColor="@color/semi_white"
                 android:textSize="12sp"
                 android:paddingRight="10dp"/>
         </LinearLayout>

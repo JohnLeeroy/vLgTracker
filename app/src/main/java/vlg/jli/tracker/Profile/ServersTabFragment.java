@@ -19,17 +19,15 @@ import java.util.List;
 
 import vlg.jli.tracker.GameME.GameMECache;
 import vlg.jli.tracker.Model.Server;
-import vlg.jli.tracker.Model.ServerList;
 import vlg.jli.tracker.R;
 import vlg.jli.tracker.Server.ServerInfoActivity;
 
 /**
  * Created by johnli on 12/1/14.
  */
-public class WatchlistTabFragment extends Fragment {
-    ListView serverListView;
-//profile_activity_list_view
+public class ServersTabFragment extends Fragment {
 
+    ListView serverListView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

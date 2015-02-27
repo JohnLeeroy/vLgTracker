@@ -15,7 +15,7 @@ import java.util.Set;
 /**
  * Created by johnli on 12/1/14.
  */
-public class User implements IDefaultData{
+public class User implements IDefaultData {
     public String id;
     public String name;
     public String avatar;
@@ -51,7 +51,6 @@ public class User implements IDefaultData{
         rank = Rank;
         kills = Kills;
         deaths = Deaths;
-
     }
 
     public User() {}

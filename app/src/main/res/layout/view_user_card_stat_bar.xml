@@ -12,13 +12,14 @@
         android:layout_height="match_parent"
         android:layout_weight="33"
         android:orientation="vertical"
-        android:background="@color/grey"
+        android:background="@color/user_stat_bar"
         >
         <TextView
             android:id="@+id/card_kill_count"
             android:text="512"
             android:textSize="16dp"
             android:textStyle="bold"
+            android:textColor="@color/semi_white"
             android:gravity="left|bottom"
             android:layout_marginLeft="10dp"
             android:layout_width="match_parent"
@@ -28,6 +29,7 @@
         <TextView
             android:text="Kills"
             android:textSize="16dp"
+            android:textColor="@color/semi_white"
             android:gravity="top|left"
             android:layout_marginLeft="10dp"
             android:layout_width="match_parent"
@@ -37,7 +39,7 @@
         <View
             android:layout_width="1dp"
             android:layout_height="match_parent"
-            android:background="@color/dark_gray"
+            android:background="@drawable/ab_stacked_solid_app"
             />
 
     <LinearLayout
@@ -45,13 +47,14 @@
         android:layout_height="match_parent"
         android:layout_weight="34"
         android:orientation="vertical"
-        android:background="@color/grey"
+        android:background="@color/user_stat_bar"
         >
         <TextView
             android:id="@+id/card_rank"
             android:text="1337"
             android:textSize="16dp"
             android:textStyle="bold"
+            android:textColor="@color/semi_white"
             android:gravity="left|bottom"
             android:layout_marginLeft="10dp"
             android:layout_width="match_parent"
@@ -61,6 +64,7 @@
         <TextView
             android:text="Skill"
             android:textSize="16dp"
+            android:textColor="@color/semi_white"
             android:gravity="top|left"
             android:layout_marginLeft="10dp"
             android:layout_width="match_parent"
@@ -70,7 +74,7 @@
     <View
         android:layout_width="1dp"
         android:layout_height="match_parent"
-        android:background="@color/dark_gray"
+        android:background="@drawable/ab_stacked_solid_app"
         />
 
     <LinearLayout
@@ -78,13 +82,14 @@
         android:layout_height="match_parent"
         android:layout_weight="33"
         android:orientation="vertical"
-        android:background="@color/grey"
+        android:background="@color/user_stat_bar"
         >
         <TextView
             android:id="@+id/card_skill"
             android:text="41203"
             android:textSize="16dp"
             android:textStyle="bold"
+            android:textColor="@color/semi_white"
             android:gravity="left|bottom"
             android:layout_marginLeft="10dp"
             android:layout_width="match_parent"
@@ -94,6 +99,7 @@
         <TextView
             android:text="Rank"
             android:textSize="16dp"
+            android:textColor="@color/semi_white"
             android:gravity="top|left"
             android:layout_marginLeft="10dp"
             android:layout_width="match_parent"

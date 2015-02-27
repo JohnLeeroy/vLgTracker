@@ -88,7 +88,7 @@ public class ServerInfoActivity extends Activity implements Observer {
 
     public void onBackPressed(){
         // do something here and don't write super.onBackPressed()
-        finish();
+        super.onBackPressed();
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
     }
 
