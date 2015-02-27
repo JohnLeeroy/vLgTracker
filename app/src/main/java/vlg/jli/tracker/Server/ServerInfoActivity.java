@@ -24,6 +24,7 @@ import java.util.Observer;
 
 import vlg.jli.tracker.AsyncListener;
 import vlg.jli.tracker.GameME.GameMEAPI;
+import vlg.jli.tracker.GameME.GameMECache;
 import vlg.jli.tracker.Model.Server;
 import vlg.jli.tracker.Model.ServerPlayer;
 import vlg.jli.tracker.R;
@@ -78,6 +79,7 @@ public class ServerInfoActivity extends Activity implements Observer {
                 return true;
             case R.id.action_watch:
                 Log.d("GMTracker", "WATCH!");
+                GameMECache.getInstance(this).addWatchedServer(currentServer);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -168,7 +170,6 @@ public class ServerInfoActivity extends Activity implements Observer {
         else
             playerListAdapter.clear();
     }
-
 
     @Override
     public void update(Observable observable, Object o) {

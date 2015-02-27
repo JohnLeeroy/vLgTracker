@@ -1,23 +1,16 @@
 package vlg.jli.tracker.GameME;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Dictionary;
-import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.List;
 import vlg.jli.tracker.Model.Server;
-import vlg.jli.tracker.Model.ServerPlayer;
 import vlg.jli.tracker.Model.User;
 import vlg.jli.tracker.Service.SettingsProvider;
 
@@ -35,6 +28,8 @@ public class GameMECache {
     public User mainUser;
 
     ArrayList<User> watchedUsers;
+
+    ArrayList<Server> watchedServers;
 
     Dictionary<String, String> cache;
 
@@ -55,6 +50,7 @@ public class GameMECache {
         Gson gson = new Gson();
         cache.put("user", gson.toJson(mainUser));
         cache.put("watchedUsers", gson.toJson(watchedUsers));
+        cache.put("watchedServers", gson.toJson(watchedServers));
         settings.setPref(gson.toJson(cache));
     }
 
@@ -70,9 +66,13 @@ public class GameMECache {
         if(watchedUsers == null)
             watchedUsers = new ArrayList<User>();
 
+        Type serverType = new TypeToken<List<Server>>(){}.getType();
+        watchedServers = gson.fromJson(cache.get("watchedServers"), type);
+        if(watchedServers == null)
+            watchedServers = new ArrayList<Server>();
+
         User serializedUser = gson.fromJson(cache.get("user"), User.class);
         mainUser = serializedUser;
-
     }
 
     public void setMainUser(User user)
@@ -83,16 +83,18 @@ public class GameMECache {
 
     public void addWatchedUser(User user)
     {
-        if(!watchedUsers.contains(user)) {
-            watchedUsers.add(user);
-            saveCache();
-        }
+        //TODO make sure there are no duplicates
+        watchedUsers.add(user);
+        saveCache();
     }
 
-    public static <T> List<T> stringToArray(String s, Class<T[]> type) {
-        T[] arr = new Gson().fromJson(s, type);
-        return Arrays.asList(arr); //or return Arrays.asList(new Gson().fromJson(s, clazz)); for a one-liner
+    public void addWatchedServer(Server server)
+    {
+        //TODO make sure there are no duplicates
+        watchedServers.add(new Server(server));
+        saveCache();
     }
 
-    public ArrayList<User> getWatchedUsers() { return watchedUsers; }
+    public ArrayList<Server> getWatchedServers()    { return watchedServers; }
+    public ArrayList<User> getWatchedUsers()        { return watchedUsers; }
 }

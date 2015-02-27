@@ -29,12 +29,12 @@ public class ProfileFragment extends Fragment {
 
         ts = tabHost.newTabSpec("ActivityTab");
         ts.setContent(R.id.ActivityTab);
-        ts.setIndicator("Activity");
+        ts.setIndicator("Users");
         tabHost.addTab(ts);
 
         ts= tabHost.newTabSpec("WatchlistTab");
         ts.setContent(R.id.WatchlistTab);
-        ts.setIndicator("Watchlist");
+        ts.setIndicator("Servers");
         tabHost.addTab(ts);
 
         tabHost.setOnTabChangedListener(onTabChangeListener);

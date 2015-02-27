@@ -1,6 +1,7 @@
 package vlg.jli.tracker.Profile;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -11,34 +12,40 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+
 import java.util.ArrayList;
 import java.util.List;
 
+import vlg.jli.tracker.GameME.GameMECache;
 import vlg.jli.tracker.Model.Server;
 import vlg.jli.tracker.Model.ServerList;
 import vlg.jli.tracker.R;
+import vlg.jli.tracker.Server.ServerInfoActivity;
 
 /**
  * Created by johnli on 12/1/14.
  */
 public class WatchlistTabFragment extends Fragment {
-    ListView activityListView;
+    ListView serverListView;
 //profile_activity_list_view
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.view_profile_watchlist, container, false);
+        View rootView = inflater.inflate(R.layout.view_serverlist, container, false);
+        serverListView = (ListView) rootView.findViewById(R.id.server_list);
+        init();
         return  rootView;
     }
 
 
     void init()
     {
-        ServerList serverList = new ServerList();
-        ServerAdapter adapter = new ServerAdapter(getActivity(), serverList.servers);
-        activityListView.setAdapter(adapter);
+        List<Server> servers = GameMECache.getInstance(getActivity()).getWatchedServers();
+        ServerAdapter adapter = new ServerAdapter(getActivity(), servers);
+        serverListView.setAdapter(adapter);
     }
 
     public class ServerAdapter extends ArrayAdapter<Server> {
@@ -53,7 +60,7 @@ public class WatchlistTabFragment extends Fragment {
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             // Get the data item for this position
-            Server server = getItem(position);
+            final Server server = getItem(position);
             // Check if an existing view is being reused, otherwise inflate the view
             if (convertView == null) {
                 convertView = LayoutInflater.from(getContext()).inflate(R.layout.view_row_server, parent, false);
@@ -69,10 +76,17 @@ public class WatchlistTabFragment extends Fragment {
             convertView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Log.d("VLG", "?");
+                    Log.d("VLG", "?" + server.toString());
+                    // serverRowSelectedListener.onServerChanged(server);
+                    Intent intent = new Intent(getActivity().getApplicationContext(), ServerInfoActivity.class);
+                    Gson gson = new Gson();
+                    intent.putExtra("server",  gson.toJson(server));
+                    startActivity(intent);
 
+                    getActivity().overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
                 }
             });
+
             // Return the completed view to render on screen
             return convertView;
         }

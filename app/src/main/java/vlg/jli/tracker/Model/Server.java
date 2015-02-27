@@ -6,7 +6,7 @@ import java.util.Observable;
 /**
  * Created by johnli on 11/28/14.
  */
-public class Server extends Observable{
+public class Server extends Observable {
 
     public String id;
     public String addr;
@@ -59,6 +59,17 @@ public class Server extends Observable{
         maxPlayers = MaxPlayers;
     }
 
+    public Server(Server other)
+    {
+        id = other.id;
+        addr = other.addr;
+        port = other.port;
+        game = "CSGO";
+        name = other.name;
+        map = other.map;
+        playerCount = other.playerCount;
+        maxPlayers = other.maxPlayers;
+    }
     public String getFullAddress()
     {
         return addr + ":" + port;

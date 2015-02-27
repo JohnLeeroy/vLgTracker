@@ -1,6 +1,7 @@
 package vlg.jli.tracker.Profile;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -12,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.koushikdutta.ion.Ion;
 
 import java.util.ArrayList;
@@ -22,6 +24,7 @@ import vlg.jli.tracker.Model.FeedItem;
 import vlg.jli.tracker.Model.FeedList;
 import vlg.jli.tracker.Model.User;
 import vlg.jli.tracker.R;
+import vlg.jli.tracker.User.UserCardActivity;
 
 /**
  * Created by johnli on 12/1/14.
@@ -63,27 +66,32 @@ public class UsersTabFragment extends Fragment {
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             // Get the data item for this position
-            User user = getItem(position);
-            // Check if an existing view is being reused, otherwise inflate the view
+            final User user = getItem(position);
             if (convertView == null) {
-                convertView = LayoutInflater.from(getContext()).inflate(R.layout.view_row_activity, parent, false);
+                convertView = LayoutInflater.from(getContext()).inflate(R.layout.view_row_user, parent, false);
             }
-
-            ImageView userIcon = (ImageView) convertView.findViewById(R.id.watch_user_icon);
-            Ion.with(getActivity()).load(user.avatar).withBitmap().intoImageView(userIcon);
-
             // Lookup view for data population
-            TextView header = (TextView) convertView.findViewById(R.id.watched_user_name);
-            TextView body = (TextView) convertView.findViewById(R.id.watch_user_body);
+            TextView tvName = (TextView) convertView.findViewById(R.id.user_title);
+            TextView rank = (TextView) convertView.findViewById(R.id.rank_stat);
+            TextView kill = (TextView) convertView.findViewById(R.id.kill_stat);
+            TextView headshot = (TextView) convertView.findViewById(R.id.headshots_stat);
 
-            header.setText(user.name);
-            //body.setText(user.rank);
+            ImageView profilePic = (ImageView) convertView.findViewById(R.id.user_icon);
+            Ion.with(getActivity()).load(user.avatar).intoImageView(profilePic);
+            tvName.setText(user.name);
+            rank.setText("Rank: " + user.rank);
+            kill.setText("Kills: " + user.kills);
+            headshot.setText("HS: " + user.headshots);
 
             convertView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Log.d("VLG", "?");
+                    Intent intent = new Intent(getActivity().getApplicationContext(), UserCardActivity.class);
+                    Gson gson = new Gson();
+                    intent.putExtra("watch_bar",  gson.toJson(user));
+                    startActivity(intent);
 
+                    getActivity().overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
                 }
             });
             // Return the completed view to render on screen
