@@ -1,7 +1,5 @@
 package vlg.jli.tracker.GameME;
 
-import android.graphics.Bitmap;
-import android.util.Log;
 import android.util.Xml;
 
 import org.w3c.dom.CharacterData;
@@ -350,19 +348,18 @@ public class GameMEXmlParser {
         User user = new User();
 
         parser.require(XmlPullParser.START_TAG, ns, "player");
-        while(parser.next() != XmlPullParser.END_TAG)
-        {
+        while(parser.next() != XmlPullParser.END_TAG) {
             String key = parser.getName();
             parser.require(XmlPullParser.START_TAG, ns, key);
             if (key.equals("id")) {
                 user.id = readText(parser);
             } else if (key.equals("name")) {
                 user.name = readText(parser);
-            }  else if (key.equals("uniqueid")) {
+            } else if (key.equals("uniqueid")) {
                 user.steamId = readText(parser);
             } else if (key.equals("avatar")) {
                 int token = parser.nextToken();
-                while(token!=XmlPullParser.CDSECT){
+                while (token != XmlPullParser.CDSECT) {
                     token = parser.nextToken();
                 }
                 String cdata = parser.getText();
@@ -410,13 +407,13 @@ public class GameMEXmlParser {
             } else if (key.equals("rounds")) {
                 user.roundCount = Integer.parseInt(readText(parser));
             } else if (key.equals("survived")) {
-                user.roundSurvivedCount = (int)Float.parseFloat(readText(parser));
+                user.roundSurvivedCount = (int) Float.parseFloat(readText(parser));
             } else if (key.equals("suicides")) {
                 user.suicideCount = Integer.parseInt(readText(parser));
-            }else if(key.equals("favweapon")) {
+            } else if (key.equals("favweapon")) {
                 Weapon favWeapon = new Weapon();
                 parser.require(XmlPullParser.START_TAG, ns, "favweapon");
-                while(parser.next() != XmlPullParser.END_TAG) {
+                while (parser.next() != XmlPullParser.END_TAG) {
 
                     String altKey = parser.getName();
                     parser.require(XmlPullParser.START_TAG, ns, altKey);
@@ -425,13 +422,48 @@ public class GameMEXmlParser {
                     } else if (altKey.equals("name")) {
                         favWeapon.name = readText(parser);
                     } else if (altKey.equals("kills")) {
-                        favWeapon.killCount = Integer.parseInt(readText(parser));
-                    }else
+                        favWeapon.kills = Integer.parseInt(readText(parser));
+                    } else
                         skip(parser);
                     parser.require(XmlPullParser.END_TAG, ns, altKey);
                 }
                 user.favoriteWeapon = favWeapon;
+            } else if (key.equals("weapons")){
+                String altKey = parser.getName();
+                ArrayList<Weapon> weapons = new ArrayList<Weapon>();
+                parser.require(XmlPullParser.START_TAG, ns, altKey);
+                while (parser.next() != XmlPullParser.END_TAG) {
+                    Weapon weapon = new Weapon();
+                    String weaponKey = parser.getName();
+                    String weaponPropertyKey;
+                    parser.require(XmlPullParser.START_TAG, ns, weaponKey);
+                    while (parser.next() != XmlPullParser.END_TAG) {
+                        weaponPropertyKey = parser.getName();
 
+                        if (weaponPropertyKey.equals("code")) {
+                            weapon.code = readText(parser);
+                        } else if (weaponPropertyKey.equals("name")) {
+                            weapon.name = readText(parser);
+                        } else if (weaponPropertyKey.equals("kills")) {
+                            weapon.kills = Integer.parseInt(readText(parser));
+                        } else if (weaponPropertyKey.equals("deaths")) {
+                            weapon.deaths = Integer.parseInt(readText(parser));
+                        } else if (weaponPropertyKey.equals("hs")) {
+                            weapon.headshots = Integer.parseInt(readText(parser));
+                        } else if (weaponPropertyKey.equals("shots")) {
+                            weapon.shots = Integer.parseInt(readText(parser));
+                        } else if (weaponPropertyKey.equals("hits")) {
+                            weapon.hits = Integer.parseInt(readText(parser));
+                        } else
+                            skip(parser);
+                    }
+                    weapons.add(weapon);
+                    parser.require(XmlPullParser.END_TAG, ns, weaponKey);
+                }
+                user.weapons = weapons;
+
+
+                parser.require(XmlPullParser.END_TAG, ns, altKey);
             }else
                 skip(parser);
             parser.require(XmlPullParser.END_TAG, ns, key);

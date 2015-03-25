@@ -20,8 +20,12 @@
         <activity android:name=".User.UserCardActivity" />
         <activity
             android:name=".Server.ServerInfoActivity"
-            android:label="@string/title_activity_server_info"
-            >
+            android:label="@string/title_activity_server_info" >
+        </activity>
+
+        <activity
+            android:name=".IntroActivity"
+            android:label="@string/title_activity_intro" >
         </activity>
     </application>
 

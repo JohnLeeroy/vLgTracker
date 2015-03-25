@@ -1,0 +1,26 @@
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/semi_black"
+    tools:context="vlg.jli.tracker.IntroActivity">
+
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/intro_view_pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </android.support.v4.view.ViewPager>
+
+    <vlg.jli.tracker.View.PagingDots
+        android:id="@+id/paging_dots"
+        android:layout_width="100dp"
+        android:layout_height="25dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerInParent="true"
+        android:layout_marginBottom="5dp"
+        />
+
+</RelativeLayout>

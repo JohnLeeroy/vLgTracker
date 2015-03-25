@@ -21,5 +21,7 @@
     <string name="title_section3">Section 3</string>
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_server_info">ServerInfoActivity</string>
+    <string name="title_activity_intro">IntroActivity</string>
 
+    <string name="font_size_intro_description">16dp</string>
 </resources>

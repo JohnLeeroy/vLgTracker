@@ -6,5 +6,10 @@ package vlg.jli.tracker.Model;
 public class Weapon {
     public String code;
     public String name;
-    public int killCount;
+    public int kills;
+    public int deaths;
+    public int headshots;
+    public int shots;
+    public int hits;
+    public int damage;
 }

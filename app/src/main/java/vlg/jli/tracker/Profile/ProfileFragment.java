@@ -1,9 +1,14 @@
 package vlg.jli.tracker.Profile;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.view.PagerTabStrip;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,10 +22,16 @@ import vlg.jli.tracker.User.UserCardFragment;
 public class ProfileFragment extends Fragment {
     TabHost tabHost;
 
+    ViewPager viewPager;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.view_profile, container, false);
+        viewPager = (ViewPager) rootView.findViewById(R.id.pager);
+
+        viewPager.setAdapter( new ProfilePagerAdapter(getFragmentManager(), getActivity()) );
+
 
         tabHost = (TabHost)rootView.findViewById(R.id.tabHost_profile);
         tabHost.setup();
@@ -28,7 +39,6 @@ public class ProfileFragment extends Fragment {
         ts.setContent(R.id.StatsTab);
         ts.setIndicator("Stats");
         tabHost.addTab(ts);
-
 
         ts = tabHost.newTabSpec("ActivityTab");
         ts.setContent(R.id.ActivityTab);
@@ -41,7 +51,6 @@ public class ProfileFragment extends Fragment {
         tabHost.addTab(ts);
 
         tabHost.setOnTabChangedListener(onTabChangeListener);
-        switchToStats();
         setTabColor(tabHost);
 
         tabHost.getTabWidget().setLeftStripDrawable(R.drawable.theme_green);
@@ -56,49 +65,24 @@ public class ProfileFragment extends Fragment {
         @Override
         public void onTabChanged(String s) {
             if(s == "ActivityTab") {
-                switchToActivity();
+                viewPager.setCurrentItem(1);
             }else if(s == "StatsTab") {
-                switchToStats();
+                viewPager.setCurrentItem(0);
+
             }else if(s == "WatchlistTab") {
-                switchToWatchlist();
+                viewPager.setCurrentItem(2);
+
             }
 
             setTabColor(tabHost);
         }
     };
 
-    void switchToActivity()
-    {
-        UsersTabFragment fragment = new UsersTabFragment();
-
-        FragmentManager fragmentManager = getFragmentManager();
-        fragmentManager.beginTransaction()
-                .replace(R.id.tab_content, fragment)
-                .commit();
-    }
-    void switchToStats()
-    {
-        UserCardFragment fragment = new UserCardFragment();
-
-        FragmentManager fragmentManager = getFragmentManager();
-        fragmentManager.beginTransaction()
-                .replace(R.id.tab_content, fragment)
-                .commit();
-
-    }
-
-    void switchToWatchlist()
-    {
-        ServersTabFragment fragment = new ServersTabFragment();
-
-        FragmentManager fragmentManager = getFragmentManager();
-        fragmentManager.beginTransaction()
-                .replace(R.id.tab_content, fragment)
-                .commit();
-    }
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
+    public void onViewStateRestored (Bundle savedInstanceState)
+    {
+        super.onViewStateRestored(savedInstanceState);
+
     }
 
     private void setTabColor(TabHost tabHost) {
@@ -126,5 +110,51 @@ public class ProfileFragment extends Fragment {
             tabWidget.getChildAt(i).setBackgroundResource(R.drawable.tab_indicator_ab_app);
     }
 
+    class ProfilePagerAdapter extends FragmentStatePagerAdapter {
 
+        Context mContext;
+
+        public ProfilePagerAdapter(FragmentManager fm, Context context) {
+            super(fm);
+            mContext = context;
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+
+            Fragment fragment = null;
+            if(position == 0)
+            {
+                fragment = new UserCardFragment();
+            }
+            else if(position == 1)
+            {
+                fragment = new UsersTabFragment();
+
+            }
+            else if(position == 2)
+            {
+                fragment = new ServersTabFragment();
+            }
+
+            Bundle args = new Bundle();
+            args.putInt("page_position", position + 1);
+
+            // Set the arguments on the fragment
+            // that will be fetched in the
+            // DemoFragment@onCreateView
+            fragment.setArguments(args);
+            return fragment;
+        }
+
+        @Override
+        public int getCount() {
+            return 3;
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return "Page " + (position + 1);
+        }
+    }
 }

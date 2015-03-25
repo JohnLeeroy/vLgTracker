@@ -1,16 +1,7 @@
 package vlg.jli.tracker.Model;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
 import java.util.ArrayList;
-import java.util.Dictionary;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * Created by johnli on 12/1/14.
@@ -45,6 +36,7 @@ public class User implements IDefaultData {
     public int suicideCount = -1;
     public int teamKills = -1;
     public Weapon favoriteWeapon;
+    public ArrayList<Weapon> weapons;
 
     public User(String Name, int Rank, int Kills, int Deaths) {
         name = Name;
@@ -79,7 +71,7 @@ public class User implements IDefaultData {
 
         if(favoriteWeapon != null) {
             data.add(new String[]{"Favorite Weapon", favoriteWeapon.name});
-            data.add(new String[]{"Weapon Kills", String.valueOf(favoriteWeapon.killCount)});
+            data.add(new String[]{"Weapon Kills", String.valueOf(favoriteWeapon.kills)});
         }
         //Removes all non-filled in fields
         /*for (Iterator<String[]> iter = data.listIterator(); iter.hasNext(); ) {

@@ -1,5 +1,6 @@
 package vlg.jli.tracker;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v4.app.FragmentManager;
@@ -52,6 +53,14 @@ public class MainActivity extends NavDrawerActivity {
         return true;
     }
 
+    @Override
+    protected void onStart()
+    {
+        super.onStart();
+        Intent intent = new Intent(this, IntroActivity.class);
+        startActivity(intent);
+    }
+
     void initSearchDelegates()
     {
         userSearchDelegate = new ISearcher() {
@@ -83,7 +92,6 @@ public class MainActivity extends NavDrawerActivity {
     }
 
     public void initSearchBar(){
-
         // Associate searchable configuration with the SearchView
         searchItem.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
             @Override

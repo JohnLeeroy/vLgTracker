@@ -84,7 +84,8 @@ public class GameMEAPI {
                 InputStream stream = null;
                 GameMEXmlParser api = new GameMEXmlParser();
                 try {
-                    stream = downloadUrl("http://api.gameme.com/api/playerinfo/csgo/" + steamId);
+                    stream = downloadUrl("http://vlgsite.gameme.com/api/playerinfo/csgo2/" + steamId + "/weapons");
+                    //stream = downloadUrl("http://api.gameme.com/api/playerinfo/csgo/" + steamId);
                     user = api.parseForUser(stream);
 
                     Log.d("gmtracker", "End downloadUserXML");
@@ -103,6 +104,33 @@ public class GameMEAPI {
 
         @Override
         protected void onPostExecute(User result) {
+            onFinish.onResult(result, true);
+        }
+    }
+
+    //http://vlgsite.gameme.com/api/playerinfo/csgo2/STEAM_0:0:13338494/weapons
+    public class DownloadUserWeaponStatsXMLTask extends AsyncTask<AsyncListener, Void, List<User>> {
+        AsyncListener onFinish;
+        String query;
+
+        public DownloadUserWeaponStatsXMLTask(String sQuery)
+        {
+            query = sQuery;
+        }
+        @Override
+        protected List<User> doInBackground(AsyncListener ... listener) {
+            onFinish = listener[0];
+            try {
+                return loadUserList("http://vlgsite.gameme.com/api/playerlist/csgo2/name/" + query);
+            } catch (IOException e) {
+                return null;//"Connection Error";
+            } catch (XmlPullParserException e) {
+                return null;//"XML Error";
+            }
+        }
+
+        @Override
+        protected void onPostExecute(List<User> result) {
             onFinish.onResult(result, true);
         }
     }
