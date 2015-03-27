@@ -1,4 +1,4 @@
-package vlg.jli.tracker;
+package vlg.jli.tracker.Intro;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -10,6 +10,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import vlg.jli.tracker.Intro.IntroPageFragment;
+import vlg.jli.tracker.R;
 import vlg.jli.tracker.View.PagingDots;
 
 public class IntroActivity extends FragmentActivity {
@@ -73,25 +74,29 @@ public class IntroActivity extends FragmentActivity {
 
         @Override
         public Fragment getItem(int i) {
-            int layoutId = 0;
             switch(i)
             {
                 case 0: {
-                    layoutId = R.layout.view_intro;
-                }break;
+                    return constructIntroFragment( R.layout.view_intro);
+                }
                 case 1: {
-                    layoutId = R.layout.view_intro_stats;
-                }break;
+                    return constructIntroFragment( R.layout.view_intro_stats);
+                }
                 case 2: {
-                    layoutId = R.layout.view_intro_servers;
-                }break;
+                    return constructIntroFragment( R.layout.view_intro_servers);
+                }
                 case 3: {
-                    layoutId = R.layout.view_intro_measure;
-                }break;
+                    return constructIntroFragment( R.layout.view_intro_measure);
+                }
                 case 4: {
-                    layoutId = R.layout.view_intro_signup;
-                }break;
+                    return new SignupPageFragment();
+                }
             }
+            return null;
+        }
+
+        private Fragment constructIntroFragment(int layoutId)
+        {
             IntroPageFragment page = new IntroPageFragment();
             page.setLayoutId(layoutId);
             return page;

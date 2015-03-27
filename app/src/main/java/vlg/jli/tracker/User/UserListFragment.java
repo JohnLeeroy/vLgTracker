@@ -100,7 +100,6 @@ public class UserListFragment extends Fragment
             convertView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    //Intent intent = new Intent(getActivity().getApplicationContext(), UserActivity.class);
                     Intent intent = new Intent(getActivity().getApplicationContext(), UserCardActivity.class);
                     Gson gson = new Gson();
                     intent.putExtra("watch_bar",  gson.toJson(user));

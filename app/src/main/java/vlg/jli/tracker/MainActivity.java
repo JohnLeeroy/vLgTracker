@@ -1,18 +1,17 @@
 package vlg.jli.tracker;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.SearchView;
 
 import java.util.List;
 
 import vlg.jli.tracker.GameME.GameMEAPI;
+import vlg.jli.tracker.Intro.IntroActivity;
 import vlg.jli.tracker.Model.Server;
 import vlg.jli.tracker.Model.User;
 import vlg.jli.tracker.Profile.ProfileFragment;
