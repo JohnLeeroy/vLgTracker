@@ -4,7 +4,7 @@
     android:id="@+id/root_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/semi_black"
+    android:background="@color/dark_gray"
     tools:context="vlg.jli.tracker.Intro.IntroActivity">
 
 

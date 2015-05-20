@@ -12,19 +12,28 @@
         android:layout_weight="35"
         />
 
-    <ImageView
-        android:layout_gravity="center"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:src="@drawable/csgo_logo"
-        />
-
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center|top"
-        android:text="Our performance analytics tools will help \n you improve your game."
-        android:textColor="@color/white"
-        android:textSize="16sp"
-        />
+        android:layout_height="0dp"
+        android:layout_weight="33"
+        android:orientation="vertical"
+        >
+
+        <ImageView
+            android:layout_gravity="center"
+            android:layout_width="300dp"
+            android:layout_height="180dp"
+            android:src="@drawable/analytics"
+            />
+
+        <TextView
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center|top"
+            android:text="Our performance analytics tools will help you improve your game."
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            />
+    </LinearLayout>
 </LinearLayout>

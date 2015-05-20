@@ -9,23 +9,25 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="35"
+        android:layout_weight="40"
         />
 
     <ImageView
         android:layout_gravity="center"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:src="@drawable/csgo_logo"
+        android:layout_width="wrap_content"
+        android:layout_height="100dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/csgotracker"
         />
 
     <TextView
-        android:layout_width="match_parent"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:gravity="center|top"
-        android:text="The best way to keep track of your\nCSGO performance."
+        android:layout_gravity="center"
+        android:text="The best way to keep track of your CSGO performance."
         android:textColor="@color/white"
-        android:textSize="16sp"
+        android:textSize="20sp"
         />
     <LinearLayout
         android:layout_width="match_parent"
@@ -36,9 +38,10 @@
         >
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="20dp"
+            android:layout_height="24dp"
             android:text="Swipe to get started"
             android:textColor="@color/white"
+            android:textSize="18sp"
             />
         <ImageView
             android:layout_width="15dp"
