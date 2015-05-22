@@ -60,9 +60,6 @@ public class UserListActivity  extends FragmentActivity{
         fragmentManager.beginTransaction()
                 .replace(R.id.user_list_content, userListFragment)
                 .commit();
-
-        ActionBar actionBar = getActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
@@ -90,7 +87,6 @@ public class UserListActivity  extends FragmentActivity{
     {
         super.onStart();
         handleIntent(getIntent());
-
     }
 
     void initSearchDelegates()
@@ -175,9 +171,9 @@ public class UserListActivity  extends FragmentActivity{
             String serializedResponse = getIntent().getStringExtra("searchResult");
             List<User> searchResults =  gson.fromJson(serializedResponse, new TypeToken<List<User>>() {}.getType());
             userListFragment.updateData(searchResults);
-            return;
+
+            Boolean isHomeEnabled = getIntent().getBooleanExtra("isHomeEnabled", true);
+            getActionBar().setDisplayHomeAsUpEnabled(isHomeEnabled);
         }
     }
-
-
 }

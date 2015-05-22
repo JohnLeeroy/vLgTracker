@@ -11,6 +11,7 @@ import android.widget.SearchView;
 import java.util.List;
 
 import vlg.jli.tracker.GameME.GameMEAPI;
+import vlg.jli.tracker.GameME.GameMECache;
 import vlg.jli.tracker.Intro.IntroActivity;
 import vlg.jli.tracker.Model.Server;
 import vlg.jli.tracker.Model.User;
@@ -56,8 +57,12 @@ public class MainActivity extends NavDrawerActivity {
     protected void onStart()
     {
         super.onStart();
-        Intent intent = new Intent(this, IntroActivity.class);
-        startActivity(intent);
+        User mainUser = GameMECache.getInstance(this).mainUser;
+        if(mainUser == null) {
+            Intent intent = new Intent(this, IntroActivity.class);
+            startActivity(intent);
+            finish();
+        }
     }
 
     void initSearchDelegates()

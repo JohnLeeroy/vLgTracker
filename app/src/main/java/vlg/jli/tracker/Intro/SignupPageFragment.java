@@ -57,6 +57,7 @@ public class SignupPageFragment extends Fragment{
                         Intent playerListIntent = new Intent(getActivity().getApplicationContext(), UserListActivity.class);
                         Gson gson = new Gson();
                         playerListIntent.putExtra("searchResult",  gson.toJson(response));
+                        playerListIntent.putExtra("isHomeEnabled",  false);
                         startActivity(playerListIntent);
                     }
                 });
@@ -81,14 +82,6 @@ public class SignupPageFragment extends Fragment{
 
     void startButtonMoveDownAnimation()
     {
-        /*
-        TranslateAnimation moveDown = new TranslateAnimation(0,0, 0, 100);
-        moveDown.setFillAfter(true);
-        moveDown.setDuration(600);
-        getStartedButton.setAnimation(moveDown);
-        getStartedButton.animate();
-        */
-
         ObjectAnimator animY = ObjectAnimator.ofFloat(getStartedButton, "translationY", 100f);
 
         animY.start();

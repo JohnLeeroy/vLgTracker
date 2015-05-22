@@ -19,6 +19,8 @@ import com.koushikdutta.ion.Ion;
 import java.util.ArrayList;
 import java.util.List;
 
+import vlg.jli.tracker.GameME.GameMECache;
+import vlg.jli.tracker.MainActivity;
 import vlg.jli.tracker.Model.User;
 import vlg.jli.tracker.R;
 
@@ -100,9 +102,14 @@ public class UserListFragment extends Fragment
             convertView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(getActivity().getApplicationContext(), UserCardActivity.class);
-                    Gson gson = new Gson();
-                    intent.putExtra("watch_bar",  gson.toJson(user));
+
+                    // Intent intent = new Intent(getActivity().getApplicationContext(), UserCardActivity.class);
+                    //Gson gson = new Gson();
+                    // intent.putExtra("watch_bar",  gson.toJson(user));
+
+                    Context context = getActivity().getApplicationContext();
+                    GameMECache.getInstance(context).setMainUser(user);
+                    Intent intent = new Intent(context, MainActivity.class);
                     startActivity(intent);
 
                     getActivity().overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);

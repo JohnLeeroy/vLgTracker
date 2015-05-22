@@ -125,7 +125,7 @@ public class ProfileFragment extends Fragment {
             Fragment fragment = null;
             if(position == 0)
             {
-                fragment = new UserCardFragment();
+                fragment = new StatsTabFragment();
             }
             else if(position == 1)
             {
