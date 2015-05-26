@@ -2,6 +2,7 @@
 <resources>
 
     <string name="app_name">GoTracker</string>
+    <string name="title_bar_name">Tracker</string>
     <string name="title_profile">Profile</string>
     <string name="title_servers">Servers</string>
     <string name="title_users">Users</string>
